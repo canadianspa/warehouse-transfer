@@ -65,7 +65,7 @@ public class AddItemGUI extends JFrame {
 				JsonArray sellableArray = j.getAsJsonObject().get("sellables").getAsJsonArray();
 				for(JsonElement e : sellableArray)
 				{
-					Item i = new Item(e.getAsJsonObject().get("full_title").getAsString(),e.getAsJsonObject().get("sku_code").getAsString());
+					Item i = new Item(e.getAsJsonObject().get("full_title").getAsString(),e.getAsJsonObject().get("sku_code").getAsString(),e.getAsJsonObject().get("id").getAsString());
 					result.add(i);
 				}
 			}
@@ -132,9 +132,11 @@ public class AddItemGUI extends JFrame {
 					add.addActionListener(new ActionListener() {
 						
 						public void actionPerformed(ActionEvent e) {
+							System.out.println(finalItem);
 							itemsToAdd.add(new Items(finalItem,1));
+							parent.setVisible(true);
 							parent.showItems();
-							
+							parent.setVisible(true);
 						}
 					
 					});

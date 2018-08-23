@@ -1,9 +1,12 @@
 import java.awt.BorderLayout;
 import java.awt.EventQueue;
+import java.awt.GridBagConstraints;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.client.Entity;
@@ -24,6 +27,9 @@ import java.util.Collection;
 import java.awt.event.ActionEvent;
 import javax.swing.JSpinner;
 import javax.swing.SpinnerNumberModel;
+import javax.swing.SwingUtilities;
+
+import java.awt.GridBagLayout;
 
 
 public class TransferGUI extends JFrame {
@@ -62,19 +68,58 @@ public class TransferGUI extends JFrame {
 
 	public void showItems()
 	{
-		panel_5.removeAll();
-
+		contentPane.remove(panel_5);
+		panel_5 = new JPanel();
+		panel_5.setLayout(new GridBagLayout());
+		contentPane.add(panel_5);
+		GridBagConstraints c = new GridBagConstraints();
+        c.fill = GridBagConstraints.HORIZONTAL;
+        c.anchor = GridBagConstraints.NORTH;
+        c.weighty = 1;
+        int gridycounter = 0;
 		for(Items i: listOfItems)
 		{
-			panel_5.add(new JLabel(i.i.productTitle));
-			JSpinner jsp = new JSpinner();
+			final Items finalItems = i; 
+			c.gridy = gridycounter;
+			
+			c.weightx = 0.7;
+			c.gridx = 0;
+			if(i.i.productTitle.length() > 15)
+			{
+				panel_5.add(new JLabel("<html>" + i.i.productTitle.substring(0, i.i.productTitle.length()/2) + "<br>" + i.i.productTitle.substring(i.i.productTitle.length()/2)),c);
+			}
+			else
+			{
+				panel_5.add(new JLabel(i.i.productTitle),c);
+			}
+			
+			final JSpinner jsp = new JSpinner();
 			jsp.setModel(new SpinnerNumberModel(i.quantity, null, null, new Integer(1)));
-			panel_5.add(jsp);
+			jsp.addChangeListener(new ChangeListener() {
+				
+				public void stateChanged(ChangeEvent e) {
+					finalItems.quantity = (Integer) jsp.getValue();
+					
+				}
+				
+			});
+			c.weightx = 0.15;
+			c.gridx = 1;
+			panel_5.add(jsp,c);
 			JButton jbu = new JButton("Remove");
-			panel_5.add(jbu);
-
+			jbu.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					listOfItems.remove(finalItems);
+					showItems();
+					setVisible(true);
+				}
+			});
+			c.weightx = 0.15;
+			c.gridx = 2;
+			panel_5.add(jbu,c);
+			
+			gridycounter ++;
 		}
-		setVisible(true);
 
 	}
 	private void findWarehouses()
@@ -153,26 +198,11 @@ public class TransferGUI extends JFrame {
 			}
 		});
 		panel_2.add(btnCreateJob);
-
-		JPanel panel_3 = new JPanel();
-		contentPane.add(panel_3);
-		panel_3.setLayout(new BorderLayout(0, 0));
-
-		JPanel panel_4 = new JPanel();
-		panel_3.add(panel_4, BorderLayout.NORTH);
-		panel_4.setLayout(new GridLayout(0, 3, 0, 0));
-
-		JLabel lblNewLabel_2 = new JLabel("Product");
-		panel_4.add(lblNewLabel_2);
-
-		JLabel lblNewLabel_3 = new JLabel("Quantity");
-		panel_4.add(lblNewLabel_3);
-
-		panel_3.add(panel_5, BorderLayout.CENTER);
-		panel_5.setLayout(new GridLayout(0, 3, 0, 0));
+				GridBagLayout gbl_panel_5 = new GridBagLayout();
+				panel_5.setLayout(gbl_panel_5);
 
 		
-		showItems();
+
 
 	}
 
