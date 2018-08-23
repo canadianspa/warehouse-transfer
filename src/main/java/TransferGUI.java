@@ -158,8 +158,7 @@ public class TransferGUI extends JFrame {
 		panel_3.add(panel_5, BorderLayout.CENTER);
 		panel_5.setLayout(new GridLayout(0, 3, 0, 0));
 
-		listOfItems.add(new Items(new Item("spa"),3));
-		listOfItems.add(new Items(new Item("chemicals"),5));
+		
 		showItems();
 
 	}

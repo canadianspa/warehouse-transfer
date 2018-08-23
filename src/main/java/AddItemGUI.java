@@ -3,23 +3,50 @@ import java.awt.EventQueue;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
+import javax.swing.JSpinner;
 import javax.swing.border.EmptyBorder;
+import javax.ws.rs.client.Client;
+import javax.ws.rs.client.ClientBuilder;
+import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
+
+import com.google.gson.Gson;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonParser;
+import com.google.gson.reflect.TypeToken;
+
 import java.awt.GridLayout;
+import java.util.ArrayList;
+import java.util.Collection;
+
 import javax.swing.JLabel;
 import javax.swing.JTextField;
+import javax.swing.SpinnerNumberModel;
 import javax.swing.JButton;
 import java.awt.FlowLayout;
+import java.awt.GridBagConstraints;
+import java.awt.event.ActionListener;
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
+import java.awt.event.ActionEvent;
+import java.awt.GridBagLayout;
+import javax.swing.border.BevelBorder;
+import javax.swing.border.EtchedBorder;
+import javax.swing.border.LineBorder;
+import java.awt.Color;
 
 public class AddItemGUI extends JFrame {
 
 	private JPanel contentPane;
-	private JTextField textField;
-	
+	private JTextField txtProductTitle;
+	String APIKEY = "***REMOVED***";
+	private JPanel panel_3;
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					AddItemGUI frame = new AddItemGUI();
+					AddItemGUI frame = new AddItemGUI(new ArrayList<Item>());
 					frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -28,44 +55,107 @@ public class AddItemGUI extends JFrame {
 		});
 	}
 
+	private ArrayList<Item> queryProducts(String query)
+	{
+		ArrayList<Item> result = new ArrayList<Item>();
+		Client client = ClientBuilder.newClient();
+		Response response;
+		try {
+
+			response = client.target("https://api.veeqo.com/products?query=" + URLEncoder.encode(query, "UTF-8"))
+					.request(MediaType.APPLICATION_JSON_TYPE)
+					.header("x-api-key", APIKEY)
+					.get();
+			String body = response.readEntity(String.class);
+			JsonArray jsonArray = new JsonArray();
+			JsonParser jparse = new JsonParser();
+			jsonArray = jparse.parse(body).getAsJsonArray();
+			for(JsonElement j : jsonArray)
+			{
+				JsonArray sellableArray = j.getAsJsonObject().get("sellables").getAsJsonArray();
+				for(JsonElement e : sellableArray)
+				{
+					Item i = new Item(e.getAsJsonObject().get("full_title").getAsString(),e.getAsJsonObject().get("sku_code").getAsString());
+					result.add(i);
+				}
+			}
+		
+		
+			return result;
+		} catch (UnsupportedEncodingException e) {
+			e.printStackTrace();
+			return new ArrayList<Item>();
+		}
+		
+
+	}
+
 	/**
 	 * Create the frame.
 	 */
-	public AddItemGUI() {
+	public AddItemGUI(ArrayList<Item> listOfItems) {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 450, 300);
+		setBounds(100, 100, 1000, 600);
 		contentPane = new JPanel();
-		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
-		contentPane.setLayout(new BorderLayout(0, 5));
-		
+		contentPane.setLayout(new BorderLayout(0, 10));
+
 		JPanel panel = new JPanel();
+		panel.setBorder(new LineBorder(new Color(0, 0, 0), 2));
 		contentPane.add(panel, BorderLayout.NORTH);
 		panel.setLayout(new GridLayout(0, 3, 0, 0));
-		
+
 		JLabel lblNewLabel = new JLabel("Product Title");
 		panel.add(lblNewLabel);
-		
-		textField = new JTextField();
-		panel.add(textField);
-		textField.setColumns(10);
-		
+
+		txtProductTitle = new JTextField();
+		panel.add(txtProductTitle);
+		txtProductTitle.setColumns(10);
+
 		JButton btnSearch = new JButton("Search");
+		btnSearch.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				ArrayList<Item> results = queryProducts(txtProductTitle.getText());
+				panel_3.removeAll();
+				GridBagConstraints c = new GridBagConstraints();
+                c.fill = GridBagConstraints.HORIZONTAL;
+                c.anchor = GridBagConstraints.NORTH;
+                c.weighty = 1;
+                int gridycounter = 0;
+				for(Item i: results)
+				{
+					if (gridycounter == 10)
+					{
+						break;
+					}
+					c.gridy = gridycounter;
+					
+					c.weightx = 0.8;
+					c.gridx = 0;
+					panel_3.add(new JLabel(i.productTitle),c);
+					c.weightx = 0.1;
+					c.gridx = 1;
+					panel_3.add(new JLabel(i.sku),c);
+					JButton add = new JButton("add");
+					c.weightx = 0.1;
+					c.gridx = 2;
+					panel_3.add(add,c);
+
+					gridycounter ++;
+
+				}
+		
+				setVisible(true);
+			
+				
+			}
+		});
 		panel.add(btnSearch);
 		
-		JPanel panel_1 = new JPanel();
-		contentPane.add(panel_1, BorderLayout.CENTER);
-		panel_1.setLayout(new BorderLayout(0, 0));
-		
-		JPanel panel_2 = new JPanel();
-		panel_1.add(panel_2, BorderLayout.NORTH);
-		panel_2.setLayout(new GridLayout(0, 3, 0, 0));
-		
-		JLabel lblNewLabel_1 = new JLabel("Product Title");
-		panel_2.add(lblNewLabel_1);
-		
-		JLabel lblNewLabel_2 = new JLabel("SKU");
-		panel_2.add(lblNewLabel_2);
+		panel_3 = new JPanel();
+		contentPane.add(panel_3, BorderLayout.CENTER);
+		GridBagLayout gbl_panel_3 = new GridBagLayout();		
+		panel_3.setLayout(gbl_panel_3);
 	}
 
 }

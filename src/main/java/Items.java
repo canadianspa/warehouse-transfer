@@ -9,6 +9,14 @@ public class Items {
 		this.i = i;
 		this.quantity = quantity;
 	}
+
+	@Override
+	public String toString() {
+		return i.toString() + " " + quantity;
+	}
+	
+	
+	
 	
 	
 	
