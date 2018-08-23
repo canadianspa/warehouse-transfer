@@ -74,6 +74,8 @@ public class TransferGUI extends JFrame {
 			panel_5.add(jbu);
 
 		}
+		setVisible(true);
+
 	}
 	private void findWarehouses()
 	{
@@ -130,7 +132,13 @@ public class TransferGUI extends JFrame {
 		JButton btnAddItem = new JButton("Add Item");
 		btnAddItem.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-
+				try {
+					AddItemGUI frame = new AddItemGUI(listOfItems,TransferGUI.this);			
+					frame.setVisible(true);
+				} catch (Exception ex) {
+					ex.printStackTrace();
+				}
+			
 			}
 		});
 		panel_2.add(btnAddItem);
@@ -139,6 +147,11 @@ public class TransferGUI extends JFrame {
 		panel_2.add(panel_1);
 
 		JButton btnCreateJob = new JButton("Create Job");
+		btnCreateJob.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				System.out.println(listOfItems.size());
+			}
+		});
 		panel_2.add(btnCreateJob);
 
 		JPanel panel_3 = new JPanel();

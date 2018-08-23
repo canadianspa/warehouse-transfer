@@ -42,18 +42,8 @@ public class AddItemGUI extends JFrame {
 	private JTextField txtProductTitle;
 	String APIKEY = "***REMOVED***";
 	private JPanel panel_3;
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					AddItemGUI frame = new AddItemGUI(new ArrayList<Item>());
-					frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
+	ArrayList<Items> itemsToAdd;
+	
 
 	private ArrayList<Item> queryProducts(String query)
 	{
@@ -93,7 +83,8 @@ public class AddItemGUI extends JFrame {
 	/**
 	 * Create the frame.
 	 */
-	public AddItemGUI(ArrayList<Item> listOfItems) {
+	public AddItemGUI(ArrayList<Items> listOfItems, final TransferGUI parent) {
+		itemsToAdd = listOfItems;
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 1000, 600);
 		contentPane = new JPanel();
@@ -124,6 +115,7 @@ public class AddItemGUI extends JFrame {
                 int gridycounter = 0;
 				for(Item i: results)
 				{
+					final Item finalItem = i;
 					if (gridycounter == 10)
 					{
 						break;
@@ -137,6 +129,15 @@ public class AddItemGUI extends JFrame {
 					c.gridx = 1;
 					panel_3.add(new JLabel(i.sku),c);
 					JButton add = new JButton("add");
+					add.addActionListener(new ActionListener() {
+						
+						public void actionPerformed(ActionEvent e) {
+							itemsToAdd.add(new Items(finalItem,1));
+							parent.showItems();
+							
+						}
+					
+					});
 					c.weightx = 0.1;
 					c.gridx = 2;
 					panel_3.add(add,c);
