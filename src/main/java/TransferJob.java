@@ -9,30 +9,76 @@ import java.util.Date;
 public class TransferJob implements Serializable{
 
 
+	String path;
 	Warehouse recvWarehouse;
 	Warehouse dispWarehouse;
 	ArrayList<Items> listOfItems;
 	LocalDateTime timeSent;
 	LocalDateTime timeDelivered;
-	boolean delivered;
+	String status;
+
 
 	public TransferJob(Warehouse recvWarehouse, Warehouse dispWarehouse, ArrayList<Items> listOfItems, LocalDateTime timeSent) {
 		this.recvWarehouse = recvWarehouse;
 		this.dispWarehouse = dispWarehouse;
 		this.listOfItems = listOfItems;
 		this.timeSent = timeSent;
-		delivered = false;
+		status = "Transit";
 	}
 
-	public void saveJob()
+
+	public void confirmJob()
 	{
+		timeDelivered = LocalDateTime.now();
+		status = "Delivered";
+
 		try {
-			FileOutputStream fileOut = new FileOutputStream(Settings.path + "/" + System.identityHashCode(this));
+			FileOutputStream fileOut = new FileOutputStream(path);
 			ObjectOutputStream out = new ObjectOutputStream(fileOut);
 			out.writeObject(this);
 			out.close();
 			fileOut.close();
-			System.out.printf("Serialized data is saved in " + Settings.path + "/" + System.identityHashCode(this));
+			System.out.printf("Serialized data is saved in " + path);
+		} catch (IOException i) {
+			i.printStackTrace();
+		}
+
+
+		//add to recv ware house
+	}
+
+	public void deleteJob()
+	{
+		status = "Failed";
+		
+		try {
+			FileOutputStream fileOut = new FileOutputStream(path);
+			ObjectOutputStream out = new ObjectOutputStream(fileOut);
+			out.writeObject(this);
+			out.close();
+			fileOut.close();
+			System.out.printf("Serialized data is saved in " + path);
+		} catch (IOException i) {
+			i.printStackTrace();
+		}
+		//add to disp warehouse
+	}
+
+
+
+
+
+
+	public void saveJob()
+	{
+		try {
+			path = Settings.path + "/" + System.identityHashCode(this);
+			FileOutputStream fileOut = new FileOutputStream(path);
+			ObjectOutputStream out = new ObjectOutputStream(fileOut);
+			out.writeObject(this);
+			out.close();
+			fileOut.close();
+			System.out.printf("Serialized data is saved in " + path);
 		} catch (IOException i) {
 			i.printStackTrace();
 		}
@@ -40,13 +86,17 @@ public class TransferJob implements Serializable{
 
 	@Override
 	public String toString() {
-		if(!delivered)
+		if(status.equals("Transit"))
 		{
 			return "Dispatched from " + dispWarehouse.name + " on " + timeSent.toString() + " to Warehouse " + recvWarehouse.name; 
 		}
-		else
+		else if(status.equals("Delivered"))
 		{
 			return "Delivered from " + dispWarehouse.name + " on " + timeDelivered.toString() + " to Warehouse " + recvWarehouse.name; 
+		}
+		else
+		{
+			return "Failed to delivered from " + dispWarehouse.name + " sent out at " + timeSent.toString() + " to Warehouse " + recvWarehouse.name;
 		}
 
 

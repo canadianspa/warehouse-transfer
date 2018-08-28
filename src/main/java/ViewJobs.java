@@ -41,42 +41,6 @@ public class ViewJobs extends JFrame {
 	}
 
 
-	public void deleteJob(TransferJob ftj)
-	{
-		File Folder = new File(Settings.path);
-		File files[];
-		files = Folder.listFiles();
-		System.out.println(Settings.path);
-		System.out.println(files.length);
-		for(int i = 0;i<files.length ; i++)
-		{
-			TransferJob tj;
-			try {
-				FileInputStream fileIn = new FileInputStream(files[i]);
-				ObjectInputStream in = new ObjectInputStream(fileIn);
-				tj = (TransferJob) in.readObject();	
-				in.close();
-				fileIn.close();
-				if(tj.equals(ftj))
-				{
-					files[i].delete();
-				}
-			} catch (IOException io) {
-			} catch (ClassNotFoundException c) {
-			}
-
-
-
-		}
-
-	}
-	
-	
-	public void confirmJob(TransferJob ftj)
-	{
-		
-	}
-	
 	public ArrayList<TransferJob> findJobs()
 	{
 		ArrayList<TransferJob> output = new ArrayList<TransferJob>();
@@ -88,10 +52,12 @@ public class ViewJobs extends JFrame {
 		for(int i = 0;i<files.length ; i++)
 		{
 			TransferJob tj;
+			
 			try {
 				FileInputStream fileIn = new FileInputStream(files[i]);
 				ObjectInputStream in = new ObjectInputStream(fileIn);
 				tj = (TransferJob) in.readObject();	
+				System.out.println(tj);
 				output.add(tj);
 				in.close();
 				fileIn.close();
@@ -174,7 +140,7 @@ public class ViewJobs extends JFrame {
 			JButton delete = new JButton("Delete Transfer");
 			delete.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
-					deleteJob(ftj);
+					ftj.deleteJob();
 					showJobs();
 					ViewJobs.this.setVisible(true);
 				}
@@ -185,7 +151,7 @@ public class ViewJobs extends JFrame {
 			JButton confirm = new JButton("Confirm Delivery");
 			confirm.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
-					confirmJob(ftj);
+					ftj.confirmJob();
 					showJobs();
 					ViewJobs.this.setVisible(true);
 				}
