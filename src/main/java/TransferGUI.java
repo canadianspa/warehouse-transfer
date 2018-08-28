@@ -30,6 +30,9 @@ import javax.swing.SpinnerNumberModel;
 import javax.swing.SwingUtilities;
 
 import java.awt.GridBagLayout;
+import java.awt.Insets;
+import javax.swing.border.LineBorder;
+import java.awt.Color;
 
 
 public class TransferGUI extends JFrame {
@@ -73,15 +76,15 @@ public class TransferGUI extends JFrame {
 		panel_5.setLayout(new GridBagLayout());
 		contentPane.add(panel_5);
 		GridBagConstraints c = new GridBagConstraints();
-        c.fill = GridBagConstraints.HORIZONTAL;
-        c.anchor = GridBagConstraints.NORTH;
-        c.weighty = 1;
-        int gridycounter = 0;
+		c.fill = GridBagConstraints.HORIZONTAL;
+		c.anchor = GridBagConstraints.NORTH;
+		c.weighty = 1;
+		int gridycounter = 0;
 		for(Items i: listOfItems)
 		{
 			final Items finalItems = i; 
 			c.gridy = gridycounter;
-			
+
 			c.weightx = 0.7;
 			c.gridx = 0;
 			if(i.i.productTitle.length() > 15)
@@ -92,16 +95,16 @@ public class TransferGUI extends JFrame {
 			{
 				panel_5.add(new JLabel(i.i.productTitle),c);
 			}
-			
+
 			final JSpinner jsp = new JSpinner();
 			jsp.setModel(new SpinnerNumberModel(i.quantity, null, null, new Integer(1)));
 			jsp.addChangeListener(new ChangeListener() {
-				
+
 				public void stateChanged(ChangeEvent e) {
 					finalItems.quantity = (Integer) jsp.getValue();
-					
+
 				}
-				
+
 			});
 			c.weightx = 0.15;
 			c.gridx = 1;
@@ -117,7 +120,7 @@ public class TransferGUI extends JFrame {
 			c.weightx = 0.15;
 			c.gridx = 2;
 			panel_5.add(jbu,c);
-			
+
 			gridycounter ++;
 		}
 
@@ -135,7 +138,7 @@ public class TransferGUI extends JFrame {
 		java.lang.reflect.Type collectionType = new TypeToken<Collection<Warehouse>>(){}.getType();
 		Collection<Warehouse> enums = g.fromJson(body, collectionType);
 		listofWarehouses = new ArrayList<Warehouse>(enums);
-	
+
 	}
 
 
@@ -145,63 +148,55 @@ public class TransferGUI extends JFrame {
 	public TransferGUI() {
 		setTitle("Transfer");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 900, 300);
+		setBounds(100, 100, 500, 300);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
-		contentPane.setLayout(new GridLayout(0, 2, 1, 0));
+		contentPane.setLayout(new BorderLayout(0, 0));
+
+
+		findWarehouses();
+
+
+		AddItemGUI frame = new AddItemGUI(listOfItems,TransferGUI.this);			
+		frame.setVisible(true);
 
 		JPanel panel_2 = new JPanel();
-		contentPane.add(panel_2);
+		contentPane.add(panel_2, BorderLayout.NORTH);
 		panel_2.setLayout(new GridLayout(0, 2, 0, 0));
-
-		
-		findWarehouses();
 		JLabel lblNewLabel = new JLabel("Dispatching Warehouse");
+
 		panel_2.add(lblNewLabel);
 
 		JComboBox<Warehouse> comboBox = new JComboBox<Warehouse>();
+
 		panel_2.add(comboBox);
 		comboBox.setModel(new DefaultComboBoxModel<Warehouse>(listofWarehouses.toArray(new Warehouse[listofWarehouses.size()])));
 
 		JLabel lblNewLabel_1 = new JLabel("Recieving Warehouse");
+
 		panel_2.add(lblNewLabel_1);
 
 		JComboBox<Warehouse> comboBox_1 = new JComboBox<Warehouse>();
+
 		panel_2.add(comboBox_1);
 		comboBox_1.setModel(new DefaultComboBoxModel<Warehouse>(listofWarehouses.toArray(new Warehouse[listofWarehouses.size()])));
 
-		JPanel panel = new JPanel();
-		panel_2.add(panel);
-
-		JButton btnAddItem = new JButton("Add Item");
-		btnAddItem.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				try {
-					AddItemGUI frame = new AddItemGUI(listOfItems,TransferGUI.this);			
-					frame.setVisible(true);
-				} catch (Exception ex) {
-					ex.printStackTrace();
-				}
-			
-			}
-		});
-		panel_2.add(btnAddItem);
-
-		JPanel panel_1 = new JPanel();
-		panel_2.add(panel_1);
+		JPanel panel_3 = new JPanel();
+		panel_3.setBorder(new LineBorder(new Color(0, 0, 0), 3));
+		contentPane.add(panel_3);
 
 		JButton btnCreateJob = new JButton("Create Job");
+		contentPane.add(btnCreateJob, BorderLayout.SOUTH);
 		btnCreateJob.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				System.out.println(listOfItems.size());
 			}
 		});
-		panel_2.add(btnCreateJob);
-				GridBagLayout gbl_panel_5 = new GridBagLayout();
-				panel_5.setLayout(gbl_panel_5);
+		GridBagLayout gbl_panel_5 = new GridBagLayout();
+		panel_5.setLayout(gbl_panel_5);
 
-		
+
 
 
 	}

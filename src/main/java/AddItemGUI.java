@@ -43,7 +43,7 @@ public class AddItemGUI extends JFrame {
 	String APIKEY = "***REMOVED***";
 	private JPanel panel_3;
 	ArrayList<Items> itemsToAdd;
-	
+
 
 	private ArrayList<Item> queryProducts(String query)
 	{
@@ -69,14 +69,14 @@ public class AddItemGUI extends JFrame {
 					result.add(i);
 				}
 			}
-		
-		
+
+
 			return result;
 		} catch (UnsupportedEncodingException e) {
 			e.printStackTrace();
 			return new ArrayList<Item>();
 		}
-		
+
 
 	}
 
@@ -86,7 +86,7 @@ public class AddItemGUI extends JFrame {
 	public AddItemGUI(ArrayList<Items> listOfItems, final TransferGUI parent) {
 		itemsToAdd = listOfItems;
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 1000, 600);
+		setBounds(( int) (parent.getBounds().x + parent.getBounds().getWidth()), 100, 1000, 600);
 		contentPane = new JPanel();
 		setContentPane(contentPane);
 		contentPane.setLayout(new BorderLayout(0, 10));
@@ -109,10 +109,10 @@ public class AddItemGUI extends JFrame {
 				ArrayList<Item> results = queryProducts(txtProductTitle.getText());
 				panel_3.removeAll();
 				GridBagConstraints c = new GridBagConstraints();
-                c.fill = GridBagConstraints.HORIZONTAL;
-                c.anchor = GridBagConstraints.NORTH;
-                c.weighty = 1;
-                int gridycounter = 0;
+				c.fill = GridBagConstraints.HORIZONTAL;
+				c.anchor = GridBagConstraints.NORTH;
+				c.weighty = 1;
+				int gridycounter = 0;
 				for(Item i: results)
 				{
 					final Item finalItem = i;
@@ -121,7 +121,7 @@ public class AddItemGUI extends JFrame {
 						break;
 					}
 					c.gridy = gridycounter;
-					
+
 					c.weightx = 0.8;
 					c.gridx = 0;
 					panel_3.add(new JLabel(i.productTitle),c);
@@ -130,7 +130,7 @@ public class AddItemGUI extends JFrame {
 					panel_3.add(new JLabel(i.sku),c);
 					JButton add = new JButton("add");
 					add.addActionListener(new ActionListener() {
-						
+
 						public void actionPerformed(ActionEvent e) {
 							System.out.println(finalItem);
 							itemsToAdd.add(new Items(finalItem,1));
@@ -138,7 +138,7 @@ public class AddItemGUI extends JFrame {
 							parent.showItems();
 							parent.setVisible(true);
 						}
-					
+
 					});
 					c.weightx = 0.1;
 					c.gridx = 2;
@@ -147,14 +147,14 @@ public class AddItemGUI extends JFrame {
 					gridycounter ++;
 
 				}
-		
+
 				setVisible(true);
-			
-				
+
+
 			}
 		});
 		panel.add(btnSearch);
-		
+
 		panel_3 = new JPanel();
 		contentPane.add(panel_3, BorderLayout.CENTER);
 		GridBagLayout gbl_panel_3 = new GridBagLayout();		
