@@ -4,6 +4,7 @@ import java.awt.GridBagConstraints;
 
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import java.awt.GridBagLayout;
@@ -22,6 +23,7 @@ import java.awt.event.ActionEvent;
 public class ViewJobs extends JFrame {
 
 	private JPanel contentPane;
+	JPanel panel;
 	/**
 	 * Launch the application.
 	 */
@@ -39,6 +41,42 @@ public class ViewJobs extends JFrame {
 	}
 
 
+	public void deleteJob(TransferJob ftj)
+	{
+		File Folder = new File(Settings.path);
+		File files[];
+		files = Folder.listFiles();
+		System.out.println(Settings.path);
+		System.out.println(files.length);
+		for(int i = 0;i<files.length ; i++)
+		{
+			TransferJob tj;
+			try {
+				FileInputStream fileIn = new FileInputStream(files[i]);
+				ObjectInputStream in = new ObjectInputStream(fileIn);
+				tj = (TransferJob) in.readObject();	
+				in.close();
+				fileIn.close();
+				if(tj.equals(ftj))
+				{
+					files[i].delete();
+				}
+			} catch (IOException io) {
+			} catch (ClassNotFoundException c) {
+			}
+
+
+
+		}
+
+	}
+	
+	
+	public void confirmJob(TransferJob ftj)
+	{
+		
+	}
+	
 	public ArrayList<TransferJob> findJobs()
 	{
 		ArrayList<TransferJob> output = new ArrayList<TransferJob>();
@@ -67,36 +105,13 @@ public class ViewJobs extends JFrame {
 
 		return output;
 	}
-	/**
-	 * Create the frame.
-	 */
-	public ViewJobs() {
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 1000, 300);
-		contentPane = new JPanel();
-		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
-		setContentPane(contentPane);
-		contentPane.setLayout(new BorderLayout(0, 0));
-		
-		JPanel panel = new JPanel();
-		contentPane.add(panel);
+	
+	public void showJobs()
+	{
+		contentPane.remove(panel);
+		panel = new JPanel();
 		panel.setLayout(new GridBagLayout());
-		
-		JPanel panel_1 = new JPanel();
-		contentPane.add(panel_1, BorderLayout.SOUTH);
-		
-		JButton btnNewButton = new JButton("Go Back");
-		btnNewButton.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				MainGUI frame = new MainGUI();
-				frame.setVisible(true);
-				
-				ViewJobs.this.setVisible(false);
-			}
-		});
-		panel_1.add(btnNewButton);
-
-		
+		contentPane.add(panel);
 		
 		
 		GridBagConstraints c = new GridBagConstraints();
@@ -126,6 +141,7 @@ public class ViewJobs extends JFrame {
 		int gridyCounter = 1;
 		for(TransferJob tj : listOfJobs)
 		{
+			final TransferJob ftj = tj;
 			c.gridy = gridyCounter;
 			c.gridx = 0;
 			JLabel dispLabel = new JLabel(tj.dispWarehouse.name);
@@ -142,19 +158,77 @@ public class ViewJobs extends JFrame {
 			
 			c.gridx = 3;
 			JButton view = new JButton("View Items");
+			view.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					String stringItems = "";
+					for(Items i: ftj.listOfItems)
+					{
+						stringItems += i.toString() + System.lineSeparator();
+					}
+					JOptionPane.showMessageDialog(null,stringItems , "Items", JOptionPane.INFORMATION_MESSAGE); 
+				}
+			});
 			panel.add(view,c);
 			
 			c.gridx = 4;
 			JButton delete = new JButton("Delete Transfer");
+			delete.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					deleteJob(ftj);
+					showJobs();
+					ViewJobs.this.setVisible(true);
+				}
+			});
 			panel.add(delete,c);
 			
 			c.gridx = 5;
 			JButton confirm = new JButton("Confirm Delivery");
+			confirm.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					confirmJob(ftj);
+					showJobs();
+					ViewJobs.this.setVisible(true);
+				}
+			});
 			panel.add(confirm,c);
 			
 			
 			gridyCounter ++;
 		}
+	}
+	/**
+	 * Create the frame.
+	 */
+	public ViewJobs() {
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setBounds(100, 100, 1000, 300);
+		contentPane = new JPanel();
+		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
+		setContentPane(contentPane);
+		contentPane.setLayout(new BorderLayout(0, 0));
+		
+		 panel = new JPanel();
+		contentPane.add(panel);
+		panel.setLayout(new GridBagLayout());
+		
+		JPanel panel_1 = new JPanel();
+		contentPane.add(panel_1, BorderLayout.SOUTH);
+		
+		JButton btnNewButton = new JButton("Go Back");
+		btnNewButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				MainGUI frame = new MainGUI();
+				frame.setVisible(true);
+				
+				ViewJobs.this.setVisible(false);
+			}
+		});
+		panel_1.add(btnNewButton);
+
+		showJobs();
+		
+		
+		
 
 
 
