@@ -7,15 +7,15 @@ import java.util.ArrayList;
 import java.util.Date;
 
 public class TransferJob implements Serializable{
-	
-	
+
+
 	Warehouse recvWarehouse;
 	Warehouse dispWarehouse;
 	ArrayList<Items> listOfItems;
 	LocalDateTime timeSent;
 	LocalDateTime timeDelivered;
 	boolean delivered;
-	
+
 	public TransferJob(Warehouse recvWarehouse, Warehouse dispWarehouse, ArrayList<Items> listOfItems, LocalDateTime timeSent) {
 		this.recvWarehouse = recvWarehouse;
 		this.dispWarehouse = dispWarehouse;
@@ -23,19 +23,19 @@ public class TransferJob implements Serializable{
 		this.timeSent = timeSent;
 		delivered = false;
 	}
-	
+
 	public void saveJob()
 	{
-		 try {
-	         FileOutputStream fileOut = new FileOutputStream(Settings.path + "/" + System.identityHashCode(this));
-	         ObjectOutputStream out = new ObjectOutputStream(fileOut);
-	         out.writeObject(this);
-	         out.close();
-	         fileOut.close();
-	         System.out.printf("Serialized data is saved in " + Settings.path + "/" + System.identityHashCode(this));
-	      } catch (IOException i) {
-	         i.printStackTrace();
-	      }
+		try {
+			FileOutputStream fileOut = new FileOutputStream(Settings.path + "/" + System.identityHashCode(this));
+			ObjectOutputStream out = new ObjectOutputStream(fileOut);
+			out.writeObject(this);
+			out.close();
+			fileOut.close();
+			System.out.printf("Serialized data is saved in " + Settings.path + "/" + System.identityHashCode(this));
+		} catch (IOException i) {
+			i.printStackTrace();
+		}
 	}
 
 	@Override
@@ -48,14 +48,36 @@ public class TransferJob implements Serializable{
 		{
 			return "Delivered from " + dispWarehouse.name + " on " + timeDelivered.toString() + " to Warehouse " + recvWarehouse.name; 
 		}
-	}
-	
-	
-	
-	
-	
 
-	
-	
+
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if(obj instanceof TransferJob)
+		{
+			TransferJob tj = (TransferJob) obj;
+			if(tj.recvWarehouse.equals(recvWarehouse) && tj.dispWarehouse.equals(dispWarehouse) && tj.timeSent.equals(timeSent))
+			{
+				return true;
+			}
+			else
+			{
+				return false;
+			}
+		}
+		else
+		{
+			return super.equals(obj);
+		}
+	}
+
+
+
+
+
+
+
+
 
 }

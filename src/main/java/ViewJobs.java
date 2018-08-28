@@ -22,7 +22,6 @@ import java.awt.event.ActionEvent;
 public class ViewJobs extends JFrame {
 
 	private JPanel contentPane;
-
 	/**
 	 * Launch the application.
 	 */
@@ -56,7 +55,6 @@ public class ViewJobs extends JFrame {
 				ObjectInputStream in = new ObjectInputStream(fileIn);
 				tj = (TransferJob) in.readObject();	
 				output.add(tj);
-				System.out.println(tj);
 				in.close();
 				fileIn.close();
 			} catch (IOException io) {
