@@ -1,5 +1,6 @@
+import java.io.Serializable;
 
-public class Items {
+public class Items implements Serializable{
 	
 	Item i;
 	int quantity;

@@ -1,5 +1,6 @@
+import java.io.Serializable;
 
-public class Warehouse {
+public class Warehouse implements Serializable{
 	
 	String name;
 	int id;

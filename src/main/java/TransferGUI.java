@@ -22,6 +22,8 @@ import javax.swing.JComboBox;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.awt.event.ActionEvent;
@@ -168,19 +170,19 @@ public class TransferGUI extends JFrame {
 
 		panel_2.add(lblNewLabel);
 
-		JComboBox<Warehouse> comboBox = new JComboBox<Warehouse>();
+		final JComboBox<Warehouse> dispCombo = new JComboBox<Warehouse>();
 
-		panel_2.add(comboBox);
-		comboBox.setModel(new DefaultComboBoxModel<Warehouse>(listofWarehouses.toArray(new Warehouse[listofWarehouses.size()])));
+		panel_2.add(dispCombo);
+		dispCombo.setModel(new DefaultComboBoxModel<Warehouse>(listofWarehouses.toArray(new Warehouse[listofWarehouses.size()])));
 
 		JLabel lblNewLabel_1 = new JLabel("Recieving Warehouse");
 
 		panel_2.add(lblNewLabel_1);
 
-		JComboBox<Warehouse> comboBox_1 = new JComboBox<Warehouse>();
+		final JComboBox<Warehouse> recvCombo = new JComboBox<Warehouse>();
 
-		panel_2.add(comboBox_1);
-		comboBox_1.setModel(new DefaultComboBoxModel<Warehouse>(listofWarehouses.toArray(new Warehouse[listofWarehouses.size()])));
+		panel_2.add(recvCombo);
+		recvCombo.setModel(new DefaultComboBoxModel<Warehouse>(listofWarehouses.toArray(new Warehouse[listofWarehouses.size()])));
 
 		JPanel panel_3 = new JPanel();
 		panel_3.setBorder(new LineBorder(new Color(0, 0, 0), 3));
@@ -190,7 +192,18 @@ public class TransferGUI extends JFrame {
 		contentPane.add(btnCreateJob, BorderLayout.SOUTH);
 		btnCreateJob.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				System.out.println(listOfItems.size());
+				Warehouse recvWarehouse = (Warehouse) recvCombo.getSelectedItem();
+				Warehouse dispWarehouse = (Warehouse) dispCombo.getSelectedItem();
+				DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
+				LocalDateTime timeNow = LocalDateTime.now();
+				
+				TransferJob tj = new TransferJob(recvWarehouse, dispWarehouse, listOfItems, timeNow);
+				tj.saveJob("/home/jake/SavedJobs");
+				
+				
+				
+				
+
 			}
 		});
 		GridBagLayout gbl_panel_5 = new GridBagLayout();
