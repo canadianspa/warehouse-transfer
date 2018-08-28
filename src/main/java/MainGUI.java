@@ -43,18 +43,22 @@ public class MainGUI extends JFrame {
 		JButton newTransfer = new JButton("New Transfer");
 		newTransfer.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				TransferGUI frame = new TransferGUI();
+				frame.setVisible(true);
+				MainGUI.this.setVisible(false);
 			}
 		});
 		contentPane.add(newTransfer);
 		
-		JButton viewCurrentJobs = new JButton("View Current Jobs");
+		JButton viewCurrentJobs = new JButton("View and Edit Jobs");
+		viewCurrentJobs.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				ViewJobs frame = new ViewJobs();
+				frame.setVisible(true);
+				MainGUI.this.setVisible(false);
+			}
+		});
 		contentPane.add(viewCurrentJobs);
-		
-		JButton finishTransfer = new JButton("Finish Transfer");
-		contentPane.add(finishTransfer);
-		
-		JButton settings = new JButton("Settings");
-		contentPane.add(settings);
 	}
 
 }

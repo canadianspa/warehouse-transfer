@@ -44,6 +44,7 @@ public class TransferGUI extends JFrame {
 	ArrayList<Items> listOfItems = new ArrayList<Items>(); 
 	ArrayList<Warehouse> listofWarehouses = new ArrayList<Warehouse>();
 	String APIKEY = "***REMOVED***";
+	AddItemGUI addFrame;
 
 	/*
 	 Client client = ClientBuilder.newClient();
@@ -160,8 +161,8 @@ public class TransferGUI extends JFrame {
 		findWarehouses();
 
 
-		AddItemGUI frame = new AddItemGUI(listOfItems,TransferGUI.this);			
-		frame.setVisible(true);
+		addFrame = new AddItemGUI(listOfItems,TransferGUI.this);			
+		addFrame.setVisible(true);
 
 		JPanel panel_2 = new JPanel();
 		contentPane.add(panel_2, BorderLayout.NORTH);
@@ -188,21 +189,43 @@ public class TransferGUI extends JFrame {
 		panel_3.setBorder(new LineBorder(new Color(0, 0, 0), 3));
 		contentPane.add(panel_3);
 
+		JPanel panel = new JPanel();
+		contentPane.add(panel, BorderLayout.SOUTH);
+
 		JButton btnCreateJob = new JButton("Create Job");
-		contentPane.add(btnCreateJob, BorderLayout.SOUTH);
+		panel.add(btnCreateJob);
+
+		JButton btnNewButton = new JButton("Go Back");
+		btnNewButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				MainGUI frame = new MainGUI();
+				frame.setVisible(true);
+				
+				TransferGUI.this.setVisible(false);
+				addFrame.setVisible(false);
+			}
+		});
+		panel.add(btnNewButton);
 		btnCreateJob.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				Warehouse recvWarehouse = (Warehouse) recvCombo.getSelectedItem();
 				Warehouse dispWarehouse = (Warehouse) dispCombo.getSelectedItem();
 				DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
 				LocalDateTime timeNow = LocalDateTime.now();
-				
+
 				TransferJob tj = new TransferJob(recvWarehouse, dispWarehouse, listOfItems, timeNow);
-				tj.saveJob("/home/jake/SavedJobs");
+				tj.saveJob();
+				MainGUI frame = new MainGUI();
+				frame.setVisible(true);
+				
+				TransferGUI.this.setVisible(false);
+				addFrame.setVisible(false);
 				
 				
-				
-				
+
+
+
+
 
 			}
 		});
@@ -213,5 +236,4 @@ public class TransferGUI extends JFrame {
 
 
 	}
-
 }
