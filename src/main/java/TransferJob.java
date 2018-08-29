@@ -1,5 +1,7 @@
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.time.LocalDateTime;
@@ -27,20 +29,47 @@ public class TransferJob implements Serializable{
 	}
 
 
+	public void refresh() throws Exception
+	{
+		FileInputStream fileIn = new FileInputStream(path);
+		ObjectInputStream in = new ObjectInputStream(fileIn);
+		TransferJob tj = (TransferJob) in.readObject();	
+		in.close();
+		fileIn.close();
+		
+		this.status = tj.status;
+	}
+	
+	
 	public void confirmJob()
 	{
-		timeDelivered = LocalDateTime.now();
-		status = "Delivered";
-
+		
 		try {
-			FileOutputStream fileOut = new FileOutputStream(path);
-			ObjectOutputStream out = new ObjectOutputStream(fileOut);
-			out.writeObject(this);
-			out.close();
-			fileOut.close();
-			System.out.printf("Serialized data is saved in " + path);
-		} catch (IOException i) {
-			i.printStackTrace();
+			refresh();
+			
+			if(status.equals("Transit"))
+			{
+			timeDelivered = LocalDateTime.now();
+			status = "Delivered";
+
+			try {
+				FileOutputStream fileOut = new FileOutputStream(path);
+				ObjectOutputStream out = new ObjectOutputStream(fileOut);
+				out.writeObject(this);
+				out.close();
+				fileOut.close();
+				System.out.printf("Serialized data is saved in " + path);
+			} catch (IOException i) {
+				i.printStackTrace();
+			}
+			}
+			else
+			{
+			   throw new Exception("Status not expected");
+			}
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 
 
@@ -49,19 +78,34 @@ public class TransferJob implements Serializable{
 
 	public void deleteJob()
 	{
-		status = "Failed";
 		
 		try {
-			FileOutputStream fileOut = new FileOutputStream(path);
-			ObjectOutputStream out = new ObjectOutputStream(fileOut);
-			out.writeObject(this);
-			out.close();
-			fileOut.close();
-			System.out.printf("Serialized data is saved in " + path);
-		} catch (IOException i) {
-			i.printStackTrace();
+			refresh();
+			
+			if(status.equals("Transit"))
+			{
+			status = "Failed";
+			
+			try {
+				FileOutputStream fileOut = new FileOutputStream(path);
+				ObjectOutputStream out = new ObjectOutputStream(fileOut);
+				out.writeObject(this);
+				out.close();
+				fileOut.close();
+				System.out.printf("Serialized data is saved in " + path);
+			} catch (IOException i) {
+				i.printStackTrace();
+			}
+			//add to disp warehouse
+			}
+			else
+			{
+			 throw new Exception("Status not expected");
+			}
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
-		//add to disp warehouse
 	}
 
 

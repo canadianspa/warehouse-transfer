@@ -50,15 +50,35 @@ public class MainGUI extends JFrame {
 		});
 		contentPane.add(newTransfer);
 		
-		JButton viewCurrentJobs = new JButton("View and Edit Jobs");
+		JButton viewCurrentJobs = new JButton("View Jobs in Transit");
 		viewCurrentJobs.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				ViewJobs frame = new ViewJobs();
+				ViewTransitJobs frame = new ViewTransitJobs();
 				frame.setVisible(true);
 				MainGUI.this.setVisible(false);
 			}
 		});
 		contentPane.add(viewCurrentJobs);
+		
+		JButton btnViewDeliveredJobs = new JButton("View Delivered Jobs");
+		btnViewDeliveredJobs.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				ViewDeliveredJobs frame = new ViewDeliveredJobs();
+				frame.setVisible(true);
+				MainGUI.this.setVisible(false);
+			}
+		});
+		contentPane.add(btnViewDeliveredJobs);
+		
+		JButton btnViewDeletedJobs = new JButton("View Deleted Jobs");
+		btnViewDeletedJobs.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				ViewDeletedJobs frame = new ViewDeletedJobs();
+				frame.setVisible(true);
+				MainGUI.this.setVisible(false);
+			}
+		});
+		contentPane.add(btnViewDeletedJobs);
 	}
 
 }

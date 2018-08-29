@@ -20,27 +20,14 @@ import javax.swing.JButton;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 
-public class ViewJobs extends JFrame {
+public abstract class ViewJobs extends JFrame {
 
 	private JPanel contentPane;
 	JPanel panel;
 	/**
 	 * Launch the application.
 	 */
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					ViewJobs frame = new ViewJobs();
-					frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
-
-
+	
 	public ArrayList<TransferJob> findJobs()
 	{
 		ArrayList<TransferJob> output = new ArrayList<TransferJob>();
@@ -71,6 +58,48 @@ public class ViewJobs extends JFrame {
 
 		return output;
 	}
+	
+	public void writeJob(int gridyCounter, TransferJob tj)
+	{
+
+		GridBagConstraints c = new GridBagConstraints();
+		c.fill = GridBagConstraints.HORIZONTAL;
+		c.anchor = GridBagConstraints.NORTH;
+		c.weighty = 1;
+		c.weightx = 0.17;
+
+		
+		final TransferJob ftj = tj;
+		c.gridy = gridyCounter;
+		c.gridx = 0;
+		JLabel dispLabel = new JLabel(tj.dispWarehouse.name);
+		panel.add(dispLabel,c);
+		
+		c.gridx = 1;
+		JLabel recvLabel = new JLabel(tj.recvWarehouse.name);
+		panel.add(recvLabel,c);
+		
+		c.gridx = 2;
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+		JLabel timeSent = new JLabel(formatter.format(tj.timeSent));
+		panel.add(timeSent,c);
+		
+		c.gridx = 3;
+		JButton view = new JButton("View Items");
+		view.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				String stringItems = "";
+				for(Items i: ftj.listOfItems)
+				{
+					stringItems += i.toString() + System.lineSeparator();
+				}
+				JOptionPane.showMessageDialog(null,stringItems , "Items", JOptionPane.INFORMATION_MESSAGE); 
+			}
+		});
+		panel.add(view,c);
+		
+	}
+	
 	
 	public void showJobs()
 	{
@@ -107,58 +136,7 @@ public class ViewJobs extends JFrame {
 		int gridyCounter = 1;
 		for(TransferJob tj : listOfJobs)
 		{
-			final TransferJob ftj = tj;
-			c.gridy = gridyCounter;
-			c.gridx = 0;
-			JLabel dispLabel = new JLabel(tj.dispWarehouse.name);
-			panel.add(dispLabel,c);
-			
-			c.gridx = 1;
-			JLabel recvLabel = new JLabel(tj.recvWarehouse.name);
-			panel.add(recvLabel,c);
-			
-			c.gridx = 2;
-	        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
-			JLabel timeSent = new JLabel(formatter.format(tj.timeSent));
-			panel.add(timeSent,c);
-			
-			c.gridx = 3;
-			JButton view = new JButton("View Items");
-			view.addActionListener(new ActionListener() {
-				public void actionPerformed(ActionEvent e) {
-					String stringItems = "";
-					for(Items i: ftj.listOfItems)
-					{
-						stringItems += i.toString() + System.lineSeparator();
-					}
-					JOptionPane.showMessageDialog(null,stringItems , "Items", JOptionPane.INFORMATION_MESSAGE); 
-				}
-			});
-			panel.add(view,c);
-			
-			c.gridx = 4;
-			JButton delete = new JButton("Delete Transfer");
-			delete.addActionListener(new ActionListener() {
-				public void actionPerformed(ActionEvent e) {
-					ftj.deleteJob();
-					showJobs();
-					ViewJobs.this.setVisible(true);
-				}
-			});
-			panel.add(delete,c);
-			
-			c.gridx = 5;
-			JButton confirm = new JButton("Confirm Delivery");
-			confirm.addActionListener(new ActionListener() {
-				public void actionPerformed(ActionEvent e) {
-					ftj.confirmJob();
-					showJobs();
-					ViewJobs.this.setVisible(true);
-				}
-			});
-			panel.add(confirm,c);
-			
-			
+			writeJob(gridyCounter,tj);
 			gridyCounter ++;
 		}
 	}
