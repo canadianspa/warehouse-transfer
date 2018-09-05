@@ -107,7 +107,11 @@ public class AddItemGUI extends JFrame {
 		btnSearch.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				ArrayList<Item> results = queryProducts(txtProductTitle.getText());
-				panel_3.removeAll();
+				contentPane.remove(panel_3);
+				panel_3 = new JPanel();
+				GridBagLayout gbl_panel_3 = new GridBagLayout();		
+				panel_3.setLayout(gbl_panel_3);
+				contentPane.add(panel_3);
 				GridBagConstraints c = new GridBagConstraints();
 				c.fill = GridBagConstraints.HORIZONTAL;
 				c.anchor = GridBagConstraints.NORTH;
@@ -116,10 +120,6 @@ public class AddItemGUI extends JFrame {
 				for(Item i: results)
 				{
 					final Item finalItem = i;
-					if (gridycounter == 10)
-					{
-						break;
-					}
 					c.gridy = gridycounter;
 
 					c.weightx = 0.8;
