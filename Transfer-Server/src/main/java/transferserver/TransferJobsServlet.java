@@ -8,9 +8,9 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.joda.time.LocalDateTime;
 
 import com.google.appengine.repackaged.com.google.type.Date;
-import com.google.appengine.repackaged.org.joda.time.LocalDateTime;
 import com.googlecode.objectify.Key;
 import com.googlecode.objectify.ObjectifyService;
 import com.googlecode.objectify.annotation.Entity;
@@ -38,7 +38,6 @@ public class TransferJobsServlet extends HttpServlet {
 
 		Warehouse recvWarehouse = new Warehouse("Canada House", 4L);
 		Warehouse dispWarehouse = new Warehouse("Verran", 5L);
-		LocalDateTime timeShipped = LocalDateTime.now();
 		ObjectifyService.ofy().save().entity(recvWarehouse).now();
 		ObjectifyService.ofy().save().entity(dispWarehouse).now();
 
@@ -46,20 +45,19 @@ public class TransferJobsServlet extends HttpServlet {
 		Key<Warehouse> dispKey = Key.create(Warehouse.class, 5L);
 	
 		
-		TransferJob tj = new TransferJob(recvKey,  dispKey,timeShipped);
+		TransferJob tj = new TransferJob(recvKey,  dispKey, new LocalDateTime());
 
 		ObjectifyService.ofy().save().entity(tj).now();
-
-		Iterable<Warehouse> iw = ObjectifyService.ofy().load().type(Warehouse.class);
 	
 		Iterable<TransferJob> it = ObjectifyService.ofy().load().type(TransferJob.class);
 		for(TransferJob t: it)
 		{
-			response.getWriter().print(t);
-
-
+			response.getWriter().print(t.id + "\r\n");
+			response.getWriter().print(t.timeSent + "\r\n");
+			response.getWriter().print(t + "\r\n");
 
 		}
+		
 
 
 

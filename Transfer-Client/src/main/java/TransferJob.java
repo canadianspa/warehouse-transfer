@@ -67,18 +67,14 @@ public class TransferJob{
 	}
 	
 	
-	
-	
-	
 	public void confirmJob()
 	{
-		//TODO add to recv ware house and change status on server and set time
+	
 	}
 
 	public void deleteJob()
 	{
 		
-		//TODO add to disp ware house and change status on server and set time
 	}
 
 	@Override
