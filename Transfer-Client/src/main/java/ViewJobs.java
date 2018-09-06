@@ -31,31 +31,7 @@ public abstract class ViewJobs extends JFrame {
 	public ArrayList<TransferJob> findJobs()
 	{
 		ArrayList<TransferJob> output = new ArrayList<TransferJob>();
-		File Folder = new File(Settings.path);
-		File files[];
-		files = Folder.listFiles();
-		System.out.println(Settings.path);
-		System.out.println(files.length);
-		for(int i = 0;i<files.length ; i++)
-		{
-			TransferJob tj;
-			
-			try {
-				FileInputStream fileIn = new FileInputStream(files[i]);
-				ObjectInputStream in = new ObjectInputStream(fileIn);
-				tj = (TransferJob) in.readObject();	
-				System.out.println(tj);
-				output.add(tj);
-				in.close();
-				fileIn.close();
-			} catch (IOException io) {
-			} catch (ClassNotFoundException c) {
-			}
-
-
-
-		}
-
+		//TODO get jobs from server
 		return output;
 	}
 	

@@ -1,13 +1,11 @@
-import java.io.Serializable;
-
-public class Item implements Serializable {
+public class Item {
 	
 	String productTitle;
 	String sku;
-	String id;
+	Long id;
 
 
-	public Item(String productTitle, String sku, String id) {
+	public Item(String productTitle, String sku, Long id) {
 		super();
 		this.productTitle = productTitle;
 		this.sku = sku;

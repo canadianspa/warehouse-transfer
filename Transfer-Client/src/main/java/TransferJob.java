@@ -1,17 +1,31 @@
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
-import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Date;
+import javax.ws.rs.client.Client;
+import javax.ws.rs.client.ClientBuilder;
+import javax.ws.rs.client.Entity;
+import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
+import com.google.gson.Gson;
 
-public class TransferJob implements Serializable{
+public class TransferJob{
 
+	
+	public static void main(String[] args) {
+		
+		Warehouse recvWarehouse = new Warehouse("Canada House", 4);
+		Warehouse dispWarehouse = new Warehouse("Verran", 5);
+		ArrayList<Items> listOfItems = new ArrayList();
+		LocalDateTime timeSent = LocalDateTime.now();
+		
+		
+		TransferJob tj = new TransferJob(recvWarehouse,  dispWarehouse, listOfItems, timeSent);
+		
+		
+		
+	}
+	
 
-	String path;
+	Integer id;
 	Warehouse recvWarehouse;
 	Warehouse dispWarehouse;
 	ArrayList<Items> listOfItems;
@@ -19,113 +33,52 @@ public class TransferJob implements Serializable{
 	LocalDateTime timeDelivered;
 	String status;
 
-
+	//transfer job for creating a new job
 	public TransferJob(Warehouse recvWarehouse, Warehouse dispWarehouse, ArrayList<Items> listOfItems, LocalDateTime timeSent) {
 		this.recvWarehouse = recvWarehouse;
 		this.dispWarehouse = dispWarehouse;
 		this.listOfItems = listOfItems;
 		this.timeSent = timeSent;
 		status = "Transit";
-	}
-
-
-	public void refresh() throws Exception
-	{
-		FileInputStream fileIn = new FileInputStream(path);
-		ObjectInputStream in = new ObjectInputStream(fileIn);
-		TransferJob tj = (TransferJob) in.readObject();	
-		in.close();
-		fileIn.close();
+		//TODO remove from disp ware house and save to server also return a id
+		saveJob();
 		
-		this.status = tj.status;
+		
 	}
+	
+	
+	public TransferJob(String json)
+	{
+		
+	}
+	
+	private void saveJob()
+	{
+		Gson g = new Gson();
+		
+		System.out.println(g.toJson(this));
+		Client client = ClientBuilder.newClient();
+		Response response = client.target("https://warehouse-transfer.appspot.com/TransferJobs")
+				.request(MediaType.APPLICATION_JSON_TYPE)
+				.post(Entity.json(g.toJson(this)));
+		
+		String body = response.readEntity(String.class);		
+		
+	}
+	
+	
+	
 	
 	
 	public void confirmJob()
 	{
-		
-		try {
-			refresh();
-			
-			if(status.equals("Transit"))
-			{
-			timeDelivered = LocalDateTime.now();
-			status = "Delivered";
-
-			try {
-				FileOutputStream fileOut = new FileOutputStream(path);
-				ObjectOutputStream out = new ObjectOutputStream(fileOut);
-				out.writeObject(this);
-				out.close();
-				fileOut.close();
-				System.out.printf("Serialized data is saved in " + path);
-			} catch (IOException i) {
-				i.printStackTrace();
-			}
-			}
-			else
-			{
-			   throw new Exception("Status not expected");
-			}
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-
-
-		//add to recv ware house
+		//TODO add to recv ware house and change status on server and set time
 	}
 
 	public void deleteJob()
 	{
 		
-		try {
-			refresh();
-			
-			if(status.equals("Transit"))
-			{
-			status = "Failed";
-			
-			try {
-				FileOutputStream fileOut = new FileOutputStream(path);
-				ObjectOutputStream out = new ObjectOutputStream(fileOut);
-				out.writeObject(this);
-				out.close();
-				fileOut.close();
-				System.out.printf("Serialized data is saved in " + path);
-			} catch (IOException i) {
-				i.printStackTrace();
-			}
-			//add to disp warehouse
-			}
-			else
-			{
-			 throw new Exception("Status not expected");
-			}
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-	}
-
-
-
-
-
-
-	public void saveJob()
-	{
-		try {
-			path = Settings.path + "/" + System.identityHashCode(this);
-			FileOutputStream fileOut = new FileOutputStream(path);
-			ObjectOutputStream out = new ObjectOutputStream(fileOut);
-			out.writeObject(this);
-			out.close();
-			fileOut.close();
-			System.out.printf("Serialized data is saved in " + path);
-		} catch (IOException i) {
-			i.printStackTrace();
-		}
+		//TODO add to disp ware house and change status on server and set time
 	}
 
 	@Override

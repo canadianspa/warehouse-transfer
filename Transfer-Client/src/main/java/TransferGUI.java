@@ -214,7 +214,6 @@ public class TransferGUI extends JFrame {
 				LocalDateTime timeNow = LocalDateTime.now();
 
 				TransferJob tj = new TransferJob(recvWarehouse, dispWarehouse, listOfItems, timeNow);
-				tj.saveJob();
 				MainGUI frame = new MainGUI();
 				frame.setVisible(true);
 				

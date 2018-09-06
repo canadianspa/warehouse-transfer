@@ -65,7 +65,7 @@ public class AddItemGUI extends JFrame {
 				JsonArray sellableArray = j.getAsJsonObject().get("sellables").getAsJsonArray();
 				for(JsonElement e : sellableArray)
 				{
-					Item i = new Item(e.getAsJsonObject().get("full_title").getAsString(),e.getAsJsonObject().get("sku_code").getAsString(),e.getAsJsonObject().get("id").getAsString());
+					Item i = new Item(e.getAsJsonObject().get("full_title").getAsString(),e.getAsJsonObject().get("sku_code").getAsString(),e.getAsJsonObject().get("id").getAsLong());
 					result.add(i);
 				}
 			}
