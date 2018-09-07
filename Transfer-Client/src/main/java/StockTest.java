@@ -13,7 +13,7 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
 import com.google.gson.reflect.TypeToken;
 
-public class Test {
+public class StockTest {
 
 	public static void main(String[] args) {
 		String APIKEY = "***REMOVED***";
