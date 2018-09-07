@@ -33,7 +33,7 @@ public class ItemServlet extends HttpServlet {
 			throws IOException {
 
 		
-		String query = "brown spa";
+		String query = "test";
 		ArrayList<Item> result = new ArrayList<Item>();
 		Client client = ClientBuilder.newClient();
 		Response response;
@@ -55,7 +55,7 @@ public class ItemServlet extends HttpServlet {
 					Item i = new Item(e.getAsJsonObject().get("full_title").getAsString(),e.getAsJsonObject().get("sku_code").getAsString(),e.getAsJsonObject().get("id").getAsLong());
 					result.add(i);
 					ObjectifyService.ofy().save().entity(i).now();
-					res.getWriter().print(i.productTitle + "\r\n");
+					res.getWriter().print(i.productTitle + " " + i.id + "\r\n");
 				}
 			}
 

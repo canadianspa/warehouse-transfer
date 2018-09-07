@@ -45,7 +45,7 @@ public class WarehouseServlet extends HttpServlet {
 		for(Warehouse w: enums)
 		{
 			ObjectifyService.ofy().save().entity(w).now();
-			res.getWriter().print(w.name + "\r\n");
+			res.getWriter().print(w.name + " " + w.id + "\r\n");
 			
 		}
 
