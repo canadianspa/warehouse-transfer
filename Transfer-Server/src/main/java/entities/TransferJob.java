@@ -1,5 +1,9 @@
-package transferserver;
+package entities;
 
+
+
+import java.util.ArrayList;
+import java.util.Date;
 
 import org.joda.time.LocalDateTime;
 
@@ -10,27 +14,29 @@ import com.googlecode.objectify.annotation.Id;
 
 @Entity
 public class TransferJob {
-	@Id Long id; // Can be Long, long, or String
-	Key<Warehouse> recvWarehouseKey;
-	Key<Warehouse> dispWarehouseKey;
-	LocalDateTime timeSent;
-	LocalDateTime timeCompleted;
-	String status;
+	public @Id Long id; // Can be Long, long, or String
+	public Key<Warehouse> recvWarehouseKey;
+	public Key<Warehouse> dispWarehouseKey;
+	public ArrayList<Items> listOfItems;
+	public Date timeSent;
+	public Date timeCompleted;
+	public String status;
 
 	public TransferJob() {}
 
-	public TransferJob(Key<Warehouse> recvWarehouse, Key<Warehouse> dispWarehouse, LocalDateTime timesent) {
+	public TransferJob(Key<Warehouse> recvWarehouse, Key<Warehouse> dispWarehouse, ArrayList<Items> listOfItems) {
 		this.recvWarehouseKey = recvWarehouse;
 		this.dispWarehouseKey = dispWarehouse;
-		this.timeSent = timesent;
+		this.listOfItems = listOfItems;
 		status = "Transit";
+		timeSent = LocalDateTime.now().toDate();
 	}
 
 	public void confirmDelivery()
 	{
 		if(status.equals("Transit"))
 		{
-			timeCompleted = LocalDateTime.now();
+			timeCompleted = LocalDateTime.now().toDate();
 			status = "Delivered";
 			ObjectifyService.ofy().save().entity(this).now();
 		}
@@ -41,7 +47,7 @@ public class TransferJob {
 	{
 		if(status.equals("Transit"))
 		{
-			timeCompleted = LocalDateTime.now();
+			timeCompleted = LocalDateTime.now().toDate();
 			status = "Deleted";
 			ObjectifyService.ofy().save().entity(this).now();
 		}

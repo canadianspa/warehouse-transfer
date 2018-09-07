@@ -13,8 +13,11 @@ import org.joda.time.LocalDateTime;
 import com.google.appengine.repackaged.com.google.type.Date;
 import com.googlecode.objectify.Key;
 import com.googlecode.objectify.ObjectifyService;
-import com.googlecode.objectify.annotation.Entity;
-import com.googlecode.objectify.annotation.Id;
+
+import entities.Item;
+import entities.Items;
+import entities.TransferJob;
+import entities.Warehouse;
 
 @WebServlet(
 		name = "TransferJobServlet",
@@ -30,6 +33,8 @@ public class TransferJobsServlet extends HttpServlet {
 
 		ObjectifyService.register(TransferJob.class); 
 		ObjectifyService.register(Warehouse.class); 
+		ObjectifyService.register(Item.class); 
+		ObjectifyService.register(Items.class); 
 		response.setContentType("text/plain");
 		response.setCharacterEncoding("UTF-8");
 
@@ -38,6 +43,19 @@ public class TransferJobsServlet extends HttpServlet {
 
 		Warehouse recvWarehouse = new Warehouse("Canada House", 4L);
 		Warehouse dispWarehouse = new Warehouse("Verran", 5L);
+		ArrayList<Items> listOfItems = new ArrayList();
+		Item spa = new Item("Spa", "SK1", 1L);
+		Item chemical = new Item("Chemical", "SH2", 2L);
+		
+		ObjectifyService.ofy().save().entity(spa).now();
+		ObjectifyService.ofy().save().entity(chemical).now();
+		
+		Key<Item> spaKey = Key.create(Item.class, 1L);
+		Key<Item> chemicalKey = Key.create(Item.class, 2L);
+		
+		listOfItems.add(new Items(spaKey,1));
+		listOfItems.add(new Items(chemicalKey,2));
+		
 		ObjectifyService.ofy().save().entity(recvWarehouse).now();
 		ObjectifyService.ofy().save().entity(dispWarehouse).now();
 
@@ -45,7 +63,7 @@ public class TransferJobsServlet extends HttpServlet {
 		Key<Warehouse> dispKey = Key.create(Warehouse.class, 5L);
 	
 		
-		TransferJob tj = new TransferJob(recvKey,  dispKey, new LocalDateTime());
+		TransferJob tj = new TransferJob(recvKey,  dispKey, listOfItems);
 
 		ObjectifyService.ofy().save().entity(tj).now();
 	
@@ -53,9 +71,14 @@ public class TransferJobsServlet extends HttpServlet {
 		for(TransferJob t: it)
 		{
 			response.getWriter().print(t.id + "\r\n");
-			response.getWriter().print(t.timeSent + "\r\n");
 			response.getWriter().print(t + "\r\n");
+			for(Items i: t.listOfItems)
+			{
+				response.getWriter().print(i.i.toString() + "\r\n");
+				response.getWriter().print(i + "\r\n");
 
+			}
+			response.getWriter().print("\r\n");
 		}
 		
 

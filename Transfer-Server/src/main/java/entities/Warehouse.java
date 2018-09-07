@@ -1,4 +1,4 @@
-package transferserver;
+package entities;
 
 import com.googlecode.objectify.annotation.Entity;
 import com.googlecode.objectify.annotation.Id;
@@ -6,9 +6,9 @@ import com.googlecode.objectify.annotation.Id;
 @Entity
 public class Warehouse{
 
-	String name;
+	public String name;
 	@Id
-	Long id;
+	public Long id;
 
 	
 	
