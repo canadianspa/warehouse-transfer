@@ -8,9 +8,6 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.joda.time.LocalDateTime;
-
-import com.google.appengine.repackaged.com.google.type.Date;
 import com.googlecode.objectify.Key;
 import com.googlecode.objectify.ObjectifyService;
 
@@ -74,7 +71,6 @@ public class TransferJobsServlet extends HttpServlet {
 			response.getWriter().print(t + "\r\n");
 			for(Items i: t.listOfItems)
 			{
-				response.getWriter().print(i.i.toString() + "\r\n");
 				response.getWriter().print(i + "\r\n");
 
 			}
