@@ -1,8 +1,9 @@
+package entities;
 
 public class Warehouse{
 
-	String name;
-	Long id;
+	public String name;
+	public Long id;
 
 	public Warehouse(String name, long id) {
 		super();

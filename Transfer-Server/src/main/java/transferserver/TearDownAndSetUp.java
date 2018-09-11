@@ -22,11 +22,14 @@ public class TearDownAndSetUp extends HttpServlet {
 	@Override
 	public void doGet(HttpServletRequest req, HttpServletResponse res) 
 			throws IOException {
-		ObjectifyService.ofy().delete().entities(ObjectifyService.ofy().load()).now();
+		
+
 		ObjectifyService.register(TransferJob.class); 
 		ObjectifyService.register(Warehouse.class); 
 		ObjectifyService.register(Item.class); 
 		ObjectifyService.register(Items.class); 
+		ObjectifyService.ofy().delete().entities(ObjectifyService.ofy().load().type(TransferJob.class)).now();
+		ObjectifyService.ofy().delete().entities(ObjectifyService.ofy().load().type(Items.class)).now();
 	}
 }
 

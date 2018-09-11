@@ -1,3 +1,4 @@
+package gui;
 import java.awt.BorderLayout;
 import java.awt.EventQueue;
 import java.awt.GridBagConstraints;
@@ -7,6 +8,10 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
+
+import entities.Items;
+import entities.TransferJob;
+
 import java.awt.GridBagLayout;
 import java.io.File;
 import java.io.FileInputStream;

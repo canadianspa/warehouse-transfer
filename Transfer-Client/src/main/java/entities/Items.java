@@ -1,7 +1,8 @@
+package entities;
 public class Items{
 	
-	Item i;
-	int quantity;
+	public Item i;
+	public int quantity;
 	
 	public Items(Item i, int quantity) {
 		super();

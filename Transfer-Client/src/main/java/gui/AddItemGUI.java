@@ -1,3 +1,4 @@
+package gui;
 import java.awt.BorderLayout;
 import java.awt.EventQueue;
 
@@ -15,6 +16,9 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
 import com.google.gson.reflect.TypeToken;
+
+import entities.Item;
+import entities.Items;
 
 import java.awt.GridLayout;
 import java.util.ArrayList;

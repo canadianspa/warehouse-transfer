@@ -1,8 +1,9 @@
+package entities;
 public class Item {
 	
-	String productTitle;
-	String sku;
-	Long id;
+	public String productTitle;
+	public String sku;
+	public Long id;
 
 
 	public Item(String productTitle, String sku, Long id) {

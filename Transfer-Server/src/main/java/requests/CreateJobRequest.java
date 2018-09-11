@@ -22,17 +22,6 @@ public class CreateJobRequest extends Request {
 		this.listOfItemsRequest = listOfItemsRequest;
 	}
 
-	class ItemsRequest 
-	{
-		Long itemId;
-		int quantity;
-		
-		public ItemsRequest(Long itemId, int quantity) {
-			this.itemId = itemId;
-			this.quantity = quantity;
-		}
-	}
-	
 	public boolean createJob()
 	{
 		try {

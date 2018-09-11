@@ -1,3 +1,4 @@
+package gui;
 import java.awt.BorderLayout;
 import java.awt.EventQueue;
 import java.awt.GridBagConstraints;
@@ -15,6 +16,10 @@ import javax.ws.rs.core.Response;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+
+import entities.Items;
+import entities.TransferJob;
+import entities.Warehouse;
 
 import java.awt.GridLayout;
 import javax.swing.JLabel;
