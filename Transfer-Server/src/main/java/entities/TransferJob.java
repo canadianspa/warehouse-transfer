@@ -12,6 +12,8 @@ import com.googlecode.objectify.ObjectifyService;
 import com.googlecode.objectify.annotation.Entity;
 import com.googlecode.objectify.annotation.Id;
 
+import requests.ItemsReply;
+
 @Entity
 public class TransferJob {
 	public @Id Long id; // Can be Long, long, or String
@@ -52,7 +54,27 @@ public class TransferJob {
 			ObjectifyService.ofy().save().entity(this).now();
 		}
 	}
-
+	
+	public Warehouse getDispWarehouse()
+	{
+		return ObjectifyService.ofy().load().key(dispWarehouseKey).now();
+	}
+	
+	public Warehouse getRecvWarehouse()
+	{
+		return ObjectifyService.ofy().load().key(recvWarehouseKey).now();
+	
+	}
+	
+	public ArrayList<ItemsReply> getItems()
+	{
+		ArrayList<ItemsReply> output = new ArrayList<ItemsReply>();
+		for(Items i: listOfItems)
+		{
+			output.add(new ItemsReply(i.getItem(),i.quantity));
+		}
+		return output;
+	}
 	@Override
 	public String toString() {
 		String output = "";

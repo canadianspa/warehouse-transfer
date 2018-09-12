@@ -10,6 +10,9 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import com.google.gson.Gson;
 
+import requests.Settings;
+import requests.changeTransferJobRequest;
+
 public class TransferJob{
 
 	
@@ -21,22 +24,32 @@ public class TransferJob{
 	public Date timeCompleted;
 	public String status;
 
-	
-	
-	public TransferJob(String json)
-	{
-		
-	}
-	
-	
+
 	public void confirmJob()
 	{
-	
+		Gson g = new Gson();
+		ArrayList<Item> result = new ArrayList<Item>();
+		Client client = ClientBuilder.newClient();
+		Response response;
+		response = client.target(Settings.serverPath + "ConfirmDelivery")
+				.request(MediaType.APPLICATION_JSON_TYPE)
+				.post(Entity.json(g.toJson(new changeTransferJobRequest(id))));
+		String body = response.readEntity(String.class);
+		System.out.println(body);
+
 	}
 
 	public void deleteJob()
 	{
-		
+		Gson g = new Gson();
+		ArrayList<Item> result = new ArrayList<Item>();
+		Client client = ClientBuilder.newClient();
+		Response response;
+		response = client.target(Settings.serverPath + "DeleteJob")
+				.request(MediaType.APPLICATION_JSON_TYPE)
+				.post(Entity.json(g.toJson(new changeTransferJobRequest(id))));
+		String body = response.readEntity(String.class);
+		System.out.println(body);
 	}
 
 	@Override

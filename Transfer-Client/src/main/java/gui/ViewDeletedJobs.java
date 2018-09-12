@@ -15,7 +15,7 @@ public class ViewDeletedJobs extends ViewJobs{
 		ArrayList<TransferJob> newOutput = new ArrayList<TransferJob>(); 
 		for(TransferJob tj: super.findJobs())
 		{
-			if(tj.status.equals("Failed"))
+			if(tj.status.equals("Deleted"))
 			{
 				newOutput.add(tj);
 			}

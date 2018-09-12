@@ -24,7 +24,10 @@ public class Items{
 	public Items() {
 	}
 
-
+	public Item getItem()
+	{
+		return ObjectifyService.ofy().load().key(i).now();
+	}
 
 	@Override
 	public String toString() {

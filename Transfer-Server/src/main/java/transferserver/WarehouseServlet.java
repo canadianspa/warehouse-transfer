@@ -1,6 +1,7 @@
 package transferserver;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Collection;
 
 import javax.servlet.annotation.WebServlet;
@@ -16,6 +17,9 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.googlecode.objectify.ObjectifyService;
 
+import entities.Item;
+import entities.Items;
+import entities.TransferJob;
 import entities.Warehouse;
 @WebServlet(
 		name = "WarehouseServlet",
@@ -30,6 +34,11 @@ public class WarehouseServlet extends HttpServlet {
 	public void doGet(HttpServletRequest req, HttpServletResponse res) 
 			throws IOException {
 		
+
+		ObjectifyService.register(TransferJob.class); 
+		ObjectifyService.register(Warehouse.class); 
+		ObjectifyService.register(Item.class); 
+		ObjectifyService.register(Items.class); 
 		Client client = ClientBuilder.newClient();
 		Response response = client.target("https://api.veeqo.com/warehouses?page_size=25")
 				.request(MediaType.APPLICATION_JSON_TYPE)
@@ -37,18 +46,19 @@ public class WarehouseServlet extends HttpServlet {
 				.get();
 
 		String body = response.readEntity(String.class);
+
 		Gson g = new Gson();
 		java.lang.reflect.Type collectionType = new TypeToken<Collection<Warehouse>>(){}.getType();
 		Collection<Warehouse> enums = g.fromJson(body, collectionType);
-		
-		
+		ArrayList<Warehouse> listOfWarehouses = new ArrayList<Warehouse>();
 		for(Warehouse w: enums)
 		{
+			listOfWarehouses.add(w);
 			ObjectifyService.ofy().save().entity(w).now();
-			res.getWriter().print(w.name + " " + w.id + "\r\n");
 			
 		}
-
+		
+		res.getWriter().println(g.toJson(listOfWarehouses));
 
 	}
 

@@ -26,28 +26,6 @@ public class Warehouse{
 		return name;
 	}
 
-	@Override
-	public boolean equals(Object obj) {
-		if(obj instanceof Warehouse)
-		{
-			Warehouse w = (Warehouse) obj;
-			if(w.id == id)
-			{
-				return true;
-			}
-			else
-			{
-				return false;
-			}
-		}
-		else
-		{
-			return super.equals(obj);
-		}
-	}
-
-
-
 
 
 

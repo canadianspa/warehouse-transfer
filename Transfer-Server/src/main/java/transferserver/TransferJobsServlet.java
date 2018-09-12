@@ -3,6 +3,8 @@ package transferserver;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.Date;
+
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -19,6 +21,7 @@ import entities.Items;
 import entities.TransferJob;
 import entities.Warehouse;
 import requests.CreateJobRequest;
+import requests.ItemsReply;
 
 @WebServlet(
 		name = "TransferJobServlet",
@@ -27,6 +30,30 @@ import requests.CreateJobRequest;
 public class TransferJobsServlet extends HttpServlet {
 
 
+	
+	class TransferJobReply
+	{
+		public Long id;
+		public Warehouse recvWarehouse;
+		public Warehouse dispWarehouse;
+		public ArrayList<ItemsReply> listOfItems;
+		public Date timeSent;
+		public Date timeCompleted;
+		public String status;
+		public TransferJobReply(Long id, Warehouse recvWarehouse, Warehouse dispWarehouse, ArrayList<ItemsReply> listOfItems,
+				Date timeSent, Date timeCompleted, String status) {
+			this.id = id;
+			this.recvWarehouse = recvWarehouse;
+			this.dispWarehouse = dispWarehouse;
+			this.listOfItems = listOfItems;
+			this.timeSent = timeSent;
+			this.timeCompleted = timeCompleted;
+			this.status = status;
+		}
+		
+		
+	}
+	
 	@Override
 	public void doGet(HttpServletRequest request, HttpServletResponse response) 
 			throws IOException {
@@ -39,18 +66,23 @@ public class TransferJobsServlet extends HttpServlet {
 		response.setContentType("text/plain");
 		response.setCharacterEncoding("UTF-8");
 	
+		ArrayList<TransferJobReply> result = new ArrayList<TransferJobReply>();
 		Iterable<TransferJob> it = ObjectifyService.ofy().load().type(TransferJob.class);
 		for(TransferJob t: it)
 		{
-			response.getWriter().print(t.id + "\r\n");
-			response.getWriter().print(t + "\r\n");
-			for(Items i: t.listOfItems)
-			{
-				response.getWriter().print(i + "\r\n");
-
-			}
-			response.getWriter().print("\r\n");
+			 ArrayList<Items> listOfItems;
+		
+			 
+			 TransferJobReply tjr = new TransferJobReply(t.id,t.getRecvWarehouse(),t.getDispWarehouse(),t.getItems(),t.timeSent,t.timeCompleted,t.status);
+			 result.add(tjr);
+			
+			
 		}
+		
+		Gson g = new Gson();
+		response.getWriter().println(g.toJson(result));
+
+		
 		
 
 
@@ -68,11 +100,12 @@ public class TransferJobsServlet extends HttpServlet {
 			Gson g = new Gson();
 			
 			CreateJobRequest cjr = g.fromJson(request.getReader().readLine(), CreateJobRequest.class);
-			cjr.createJob();
-
-
-			response.getWriter().print("Success");
-		} catch (JsonSyntaxException e) {
+			if(cjr.listOfItemsRequest.size() == 0)
+			{
+				throw new Exception("Need Items in Transfer");
+			}
+			response.getWriter().print(cjr.createJob());
+		} catch (Exception e) {
 			response.getWriter().print("Failed");
 
 		}

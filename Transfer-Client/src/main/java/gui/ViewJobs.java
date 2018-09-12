@@ -8,9 +8,18 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
+import javax.ws.rs.client.Client;
+import javax.ws.rs.client.ClientBuilder;
+import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
+
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
 import entities.Items;
 import entities.TransferJob;
+import entities.Warehouse;
+import requests.Settings;
 
 import java.awt.GridBagLayout;
 import java.io.File;
@@ -35,9 +44,16 @@ public abstract class ViewJobs extends JFrame {
 	
 	public ArrayList<TransferJob> findJobs()
 	{
-		ArrayList<TransferJob> output = new ArrayList<TransferJob>();
-		//TODO get jobs from server
-		return output;
+		Client client = ClientBuilder.newClient();
+		Response response = client.target(Settings.serverPath + "TransferJob")
+				.request(MediaType.APPLICATION_JSON_TYPE)
+				.get();
+
+		String body = response.readEntity(String.class);
+		Gson g = new Gson();
+		System.out.println(g.fromJson(body, new TypeToken<ArrayList<TransferJob>>(){}.getType()));
+		return g.fromJson(body, new TypeToken<ArrayList<TransferJob>>(){}.getType());
+		
 	}
 	
 	public void writeJob(int gridyCounter, TransferJob tj)
@@ -62,7 +78,7 @@ public abstract class ViewJobs extends JFrame {
 		
 		c.gridx = 2;
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
-		JLabel timeSent = new JLabel(formatter.format(tj.timeSent));
+		JLabel timeSent = new JLabel();
 		panel.add(timeSent,c);
 		
 		c.gridx = 3;

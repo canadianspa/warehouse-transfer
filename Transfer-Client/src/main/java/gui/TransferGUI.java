@@ -20,6 +20,9 @@ import com.google.gson.reflect.TypeToken;
 import entities.Items;
 import entities.TransferJob;
 import entities.Warehouse;
+import requests.CreateJobRequest;
+import requests.ItemsRequest;
+import requests.Settings;
 
 import java.awt.GridLayout;
 import javax.swing.JLabel;
@@ -48,19 +51,9 @@ public class TransferGUI extends JFrame {
 	private JPanel panel_5 = new JPanel();
 	ArrayList<Items> listOfItems = new ArrayList<Items>(); 
 	ArrayList<Warehouse> listofWarehouses = new ArrayList<Warehouse>();
-	String APIKEY = "***REMOVED***";
 	AddItemGUI addFrame;
 
-	/*
-	 Client client = ClientBuilder.newClient();
-		Entity payload = Entity.json("");	
-		Response response = client.target("https://api.veeqo.com/customers")
-				.request(MediaType.APPLICATION_JSON_TYPE)
-				.header("x-api-key", APIKEY)
-				.post(payload);
 
-		String body = response.readEntity(String.class);
-	 */
 	/**
 	 * Launch the application.
 	 */
@@ -136,16 +129,13 @@ public class TransferGUI extends JFrame {
 	private void findWarehouses()
 	{
 		Client client = ClientBuilder.newClient();
-		Response response = client.target("https://api.veeqo.com/warehouses?page_size=25")
+		Response response = client.target(Settings.serverPath + "Warehouse")
 				.request(MediaType.APPLICATION_JSON_TYPE)
-				.header("x-api-key", APIKEY)
 				.get();
 
 		String body = response.readEntity(String.class);
 		Gson g = new Gson();
-		java.lang.reflect.Type collectionType = new TypeToken<Collection<Warehouse>>(){}.getType();
-		Collection<Warehouse> enums = g.fromJson(body, collectionType);
-		listofWarehouses = new ArrayList<Warehouse>(enums);
+		listofWarehouses = g.fromJson(body, new TypeToken<ArrayList<Warehouse>>(){}.getType());
 
 	}
 
@@ -215,10 +205,25 @@ public class TransferGUI extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				Warehouse recvWarehouse = (Warehouse) recvCombo.getSelectedItem();
 				Warehouse dispWarehouse = (Warehouse) dispCombo.getSelectedItem();
-				DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
-				LocalDateTime timeNow = LocalDateTime.now();
+				Long dispWarehouseId = dispWarehouse.id;
+				Long recvWarehouseId = recvWarehouse.id;
+				ArrayList<ItemsRequest> listOfItemsRequest = new ArrayList<ItemsRequest>();
+				for(Items i: listOfItems)
+				{
+					listOfItemsRequest.add(new ItemsRequest(i.i.id, i.quantity));
+				}
+				Gson g = new Gson();
 
-				TransferJob tj = new TransferJob(recvWarehouse, dispWarehouse, listOfItems, timeNow);
+				CreateJobRequest cjr = new CreateJobRequest(dispWarehouseId,recvWarehouseId,listOfItemsRequest);				
+				Client client = ClientBuilder.newClient();
+				Response response = client.target(Settings.serverPath + "TransferJob")
+						.request(MediaType.APPLICATION_JSON_TYPE)
+						.post(Entity.json(g.toJson(cjr)));
+
+				String body = response.readEntity(String.class);	
+				System.out.println(body);
+				
+
 				MainGUI frame = new MainGUI();
 				frame.setVisible(true);
 				

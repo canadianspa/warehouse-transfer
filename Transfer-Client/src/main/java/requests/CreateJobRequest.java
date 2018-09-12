@@ -34,7 +34,7 @@ public class CreateJobRequest extends Request {
 		Gson g = new Gson();
 
 		
-		CreateJobRequest cjr = null;
+		CreateJobRequest cjr;
 		Long dispWarehouseId = 20720l;
 		Long recvWarehouseId = 24618l;
 		ArrayList<ItemsRequest> listOfItemsRequest = new ArrayList<ItemsRequest>();

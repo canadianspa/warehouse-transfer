@@ -13,12 +13,17 @@ import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
+import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
 import com.googlecode.objectify.ObjectifyService;
 
 import entities.Item;
+import entities.Items;
+import entities.TransferJob;
+import entities.Warehouse;
+import requests.CreateJobRequest;
 @WebServlet(
 		name = "ItemServlet",
 		urlPatterns = {"/Item"}
@@ -29,11 +34,18 @@ public class ItemServlet extends HttpServlet {
 	String APIKEY = "***REMOVED***";
 
 	@Override
-	public void doGet(HttpServletRequest req, HttpServletResponse res) 
+	public void doPost(HttpServletRequest req, HttpServletResponse res) 
 			throws IOException {
 
+
+		ObjectifyService.register(TransferJob.class); 
+		ObjectifyService.register(Warehouse.class); 
+		ObjectifyService.register(Item.class); 
+		ObjectifyService.register(Items.class); 
+		Gson g = new Gson();
 		
-		String query = "test";
+		String query = g.fromJson(req.getReader().readLine(), String.class);
+		
 		ArrayList<Item> result = new ArrayList<Item>();
 		Client client = ClientBuilder.newClient();
 		Response response;
@@ -55,13 +67,15 @@ public class ItemServlet extends HttpServlet {
 					Item i = new Item(e.getAsJsonObject().get("full_title").getAsString(),e.getAsJsonObject().get("sku_code").getAsString(),e.getAsJsonObject().get("id").getAsLong());
 					result.add(i);
 					ObjectifyService.ofy().save().entity(i).now();
-					res.getWriter().print(i.productTitle + " " + i.id + "\r\n");
 				}
 			}
 
+			
 
 		} catch (UnsupportedEncodingException e) {
 		}
+
+		res.getWriter().println(g.toJson(result));
 
 
 

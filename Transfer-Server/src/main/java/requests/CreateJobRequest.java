@@ -14,7 +14,7 @@ public class CreateJobRequest extends Request {
 
 	Long dispWarehouseId;
 	Long recvWarehouseId;
-	ArrayList<ItemsRequest> listOfItemsRequest;
+	public ArrayList<ItemsRequest> listOfItemsRequest;
 	
 	public CreateJobRequest(Long dispWarehouseId, Long recvWarehouseId, ArrayList<ItemsRequest> listOfItemsRequest) {
 		this.dispWarehouseId = dispWarehouseId;
