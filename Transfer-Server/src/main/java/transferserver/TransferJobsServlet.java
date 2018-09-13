@@ -58,11 +58,6 @@ public class TransferJobsServlet extends HttpServlet {
 	public void doGet(HttpServletRequest request, HttpServletResponse response) 
 			throws IOException {
 
-
-		ObjectifyService.register(TransferJob.class); 
-		ObjectifyService.register(Warehouse.class); 
-		ObjectifyService.register(Item.class); 
-		ObjectifyService.register(Items.class); 
 		response.setContentType("text/plain");
 		response.setCharacterEncoding("UTF-8");
 	

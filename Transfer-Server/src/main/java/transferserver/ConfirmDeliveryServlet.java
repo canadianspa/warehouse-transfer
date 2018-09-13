@@ -22,7 +22,6 @@ public class ConfirmDeliveryServlet  extends HttpServlet {
 	
 	@Override
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		ObjectifyService.register(TransferJob.class); 
 		response.setContentType("text/plain");
 		response.setCharacterEncoding("UTF-8");
 		

@@ -12,14 +12,16 @@ import com.google.gson.Gson;
 import com.googlecode.objectify.ObjectifyService;
 
 import entities.TransferJob;
+import entities.User;
 import requests.CreateJobRequest;
+import requests.LoginRequest;
 import requests.changeTransferJobRequest;
 @WebServlet(
-		name = "DeleteJobServlet",
-		urlPatterns = {"/DeleteJob"}
+		name = "LoginServlet",
+		urlPatterns = {"/Login"}
 		)
-public class DeleteJobServlet  extends HttpServlet{
-
+public class LoginServlet  extends HttpServlet {
+	
 	@Override
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		response.setContentType("text/plain");
@@ -28,14 +30,21 @@ public class DeleteJobServlet  extends HttpServlet{
 		try {
 			Gson g = new Gson();
 			
-			changeTransferJobRequest cjr = g.fromJson(request.getReader().readLine(), changeTransferJobRequest.class);
-			TransferJob tj = ObjectifyService.ofy().load().type(TransferJob.class).id(cjr.TransferJobId).now();
-			tj.deleteDelivery();
+			LoginRequest lr = g.fromJson(request.getReader().readLine(), LoginRequest.class);
+			 
+			
+			User u = ObjectifyService.ofy().load().type(User.class).id(lr.email).now();
+			
+			if(u.password.equals(lr.password))
+			{
+				response.getWriter().print(u.userKey);
+			}
+			
 			
 		} catch (Exception e) {
 			response.getWriter().print("Failed");
 
 		}
-		
 	}
+
 }

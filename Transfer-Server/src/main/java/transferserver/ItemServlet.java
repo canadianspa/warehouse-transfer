@@ -36,12 +36,6 @@ public class ItemServlet extends HttpServlet {
 	@Override
 	public void doPost(HttpServletRequest req, HttpServletResponse res) 
 			throws IOException {
-
-
-		ObjectifyService.register(TransferJob.class); 
-		ObjectifyService.register(Warehouse.class); 
-		ObjectifyService.register(Item.class); 
-		ObjectifyService.register(Items.class); 
 		Gson g = new Gson();
 		
 		String query = g.fromJson(req.getReader().readLine(), String.class);

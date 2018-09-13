@@ -16,11 +16,6 @@ public class CreateJobRequest extends Request {
 	Long recvWarehouseId;
 	public ArrayList<ItemsRequest> listOfItemsRequest;
 	
-	public CreateJobRequest(Long dispWarehouseId, Long recvWarehouseId, ArrayList<ItemsRequest> listOfItemsRequest) {
-		this.dispWarehouseId = dispWarehouseId;
-		this.recvWarehouseId = recvWarehouseId;
-		this.listOfItemsRequest = listOfItemsRequest;
-	}
 
 	public boolean createJob()
 	{
@@ -35,7 +30,6 @@ public class CreateJobRequest extends Request {
 				
 			}
 			TransferJob tj = new TransferJob(recvKey,  dispKey, listOfItems);
-			ObjectifyService.ofy().save().entity(tj).now();
 			return true;
 		} catch (Exception e) {
 			e.printStackTrace();

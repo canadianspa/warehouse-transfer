@@ -34,11 +34,6 @@ public class WarehouseServlet extends HttpServlet {
 	public void doGet(HttpServletRequest req, HttpServletResponse res) 
 			throws IOException {
 		
-
-		ObjectifyService.register(TransferJob.class); 
-		ObjectifyService.register(Warehouse.class); 
-		ObjectifyService.register(Item.class); 
-		ObjectifyService.register(Items.class); 
 		Client client = ClientBuilder.newClient();
 		Response response = client.target("https://api.veeqo.com/warehouses?page_size=25")
 				.request(MediaType.APPLICATION_JSON_TYPE)
