@@ -94,10 +94,11 @@ public class LoginGUI extends JFrame {
 				if(body.equals("Failed"))
 				{
 					JOptionPane.showMessageDialog(null, "Failed Login");
+					
 				}
 				else
 				{
-					
+					System.out.println(body);
 					Settings.userKey = body;
 					MainGUI frame = new MainGUI();
 					frame.setVisible(true);

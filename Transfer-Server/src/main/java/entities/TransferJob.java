@@ -29,15 +29,17 @@ public class TransferJob {
 	public Date timeSent;
 	public Date timeCompleted;
 	public String status;
+	public Key<User> creator;
 	String APIKEY = "***REMOVED***";
 
 
 	public TransferJob() {}
 
-	public TransferJob(Key<Warehouse> recvWarehouse, Key<Warehouse> dispWarehouse, ArrayList<Items> listOfItems) {
+	public TransferJob(Key<Warehouse> recvWarehouse, Key<Warehouse> dispWarehouse, ArrayList<Items> listOfItems, Key<User> Creator) {
 		this.recvWarehouseKey = recvWarehouse;
 		this.dispWarehouseKey = dispWarehouse;
 		this.listOfItems = listOfItems;
+		this.creator = creator;
 		status = "Transit";
 		timeSent = LocalDateTime.now().toDate();
 		for(Items i: listOfItems)

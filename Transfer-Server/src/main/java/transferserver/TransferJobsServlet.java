@@ -65,12 +65,9 @@ public class TransferJobsServlet extends HttpServlet {
 		Iterable<TransferJob> it = ObjectifyService.ofy().load().type(TransferJob.class);
 		for(TransferJob t: it)
 		{
-			 ArrayList<Items> listOfItems;
 		
-			 
 			 TransferJobReply tjr = new TransferJobReply(t.id,t.getRecvWarehouse(),t.getDispWarehouse(),t.getItems(),t.timeSent,t.timeCompleted,t.status);
 			 result.add(tjr);
-			
 			
 		}
 		
@@ -98,6 +95,10 @@ public class TransferJobsServlet extends HttpServlet {
 			if(cjr.listOfItemsRequest.size() == 0)
 			{
 				throw new Exception("Need Items in Transfer");
+			}
+			if(cjr.getLevel() < 2)
+			{
+				throw new Exception("Need higher Level");
 			}
 			response.getWriter().print(cjr.createJob());
 		} catch (Exception e) {

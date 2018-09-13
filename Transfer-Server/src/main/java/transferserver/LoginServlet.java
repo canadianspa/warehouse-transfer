@@ -34,10 +34,15 @@ public class LoginServlet  extends HttpServlet {
 			 
 			
 			User u = ObjectifyService.ofy().load().type(User.class).id(lr.email).now();
-			
+
 			if(u.password.equals(lr.password))
 			{
 				response.getWriter().print(u.userKey);
+			}
+			else
+			{
+				response.getWriter().print("Failed");
+
 			}
 			
 			

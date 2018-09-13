@@ -8,6 +8,7 @@ import com.googlecode.objectify.ObjectifyService;
 import entities.Item;
 import entities.Items;
 import entities.TransferJob;
+import entities.User;
 import entities.Warehouse;
 
 public class CreateJobRequest extends Request {
@@ -29,7 +30,8 @@ public class CreateJobRequest extends Request {
 				listOfItems.add(new Items(itemKey,i.quantity));
 				
 			}
-			TransferJob tj = new TransferJob(recvKey,  dispKey, listOfItems);
+			Key<User> userKey = Key.create(User.class, getUser().email);
+			TransferJob tj = new TransferJob(recvKey,  dispKey, listOfItems,userKey);
 			return true;
 		} catch (Exception e) {
 			e.printStackTrace();

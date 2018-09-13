@@ -51,7 +51,6 @@ public abstract class ViewJobs extends JFrame {
 
 		String body = response.readEntity(String.class);
 		Gson g = new Gson();
-		System.out.println(g.fromJson(body, new TypeToken<ArrayList<TransferJob>>(){}.getType()));
 		return g.fromJson(body, new TypeToken<ArrayList<TransferJob>>(){}.getType());
 		
 	}

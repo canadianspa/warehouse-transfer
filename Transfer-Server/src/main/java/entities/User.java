@@ -19,6 +19,7 @@ public class User {
 		this.email = email;
 		this.password = password;
 		this.userKey = UUID.randomUUID().toString();
+		System.out.println(userKey);
 		this.level = level;
 	}
 

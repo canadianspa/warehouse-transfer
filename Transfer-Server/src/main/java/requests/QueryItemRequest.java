@@ -1,6 +1,6 @@
 package requests;
 
-public class QueryItemRequest extends Request {
+public class QueryItemRequest {
 	
 	String query;
 	
