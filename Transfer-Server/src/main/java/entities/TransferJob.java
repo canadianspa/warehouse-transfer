@@ -31,12 +31,13 @@ public class TransferJob {
 	public Long timeCompleted;
 	public String status;
 	public Key<User> creator;
+	public Key<User> completor;
 	String APIKEY = "***REMOVED***";
 
 
 	public TransferJob() {}
 
-	public TransferJob(Key<Warehouse> recvWarehouse, Key<Warehouse> dispWarehouse, ArrayList<Items> listOfItems, Key<User> Creator) {
+	public TransferJob(Key<Warehouse> recvWarehouse, Key<Warehouse> dispWarehouse, ArrayList<Items> listOfItems, Key<User> creator) {
 		this.recvWarehouseKey = recvWarehouse;
 		this.dispWarehouseKey = dispWarehouse;
 		this.listOfItems = listOfItems;
@@ -90,7 +91,7 @@ public class TransferJob {
 
 	}
 	
-	public void confirmDelivery()
+	public void confirmDelivery(User U)
 	{
 		if(status.equals("Transit"))
 		{
@@ -132,7 +133,7 @@ public class TransferJob {
 
 	}
 	
-	public void deleteDelivery()
+	public void deleteDelivery(User u)
 	{
 		if(status.equals("Transit"))
 		{
@@ -169,6 +170,7 @@ public class TransferJob {
 			}
 			timeCompleted = Instant.now().getEpochSecond();
 			status = "Deleted";
+			completor = Key.create(User.class, u.email);
 			ObjectifyService.ofy().save().entity(this).now();
 		}
 	}
@@ -182,6 +184,16 @@ public class TransferJob {
 	{
 		return ObjectifyService.ofy().load().key(recvWarehouseKey).now();
 	
+	}
+	
+	public User getCreator()
+	{
+		return ObjectifyService.ofy().load().key(creator).now();
+	}
+	
+	public User getCompletor()
+	{
+		return ObjectifyService.ofy().load().key(completor).now();
 	}
 	
 	public ArrayList<ItemsReply> getItems()

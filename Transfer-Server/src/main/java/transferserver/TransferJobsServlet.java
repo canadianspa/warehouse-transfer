@@ -3,8 +3,10 @@ package transferserver;
 import java.io.IOException;
 import java.io.InputStream;
 import java.time.Instant;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.TimeZone;
 import java.util.logging.Logger;
 
 import javax.servlet.ServletException;
@@ -40,11 +42,11 @@ public class TransferJobsServlet extends HttpServlet {
 		public Warehouse recvWarehouse;
 		public Warehouse dispWarehouse;
 		public ArrayList<ItemsReply> listOfItems;
-		public Date timeSent;
-		public Date timeCompleted;
+		public LocalDateTime timeSent;
+		public LocalDateTime timeCompleted;
 		public String status;
 		public TransferJobReply(Long id, Warehouse recvWarehouse, Warehouse dispWarehouse, ArrayList<ItemsReply> listOfItems,
-				Date timeSent, Date timeCompleted, String status) {
+				LocalDateTime timeSent, LocalDateTime timeCompleted, String status) {
 			this.id = id;
 			this.recvWarehouse = recvWarehouse;
 			this.dispWarehouse = dispWarehouse;
@@ -68,8 +70,14 @@ public class TransferJobsServlet extends HttpServlet {
 		Iterable<TransferJob> it = ObjectifyService.ofy().load().type(TransferJob.class);
 		for(TransferJob t: it)
 		{
-			 Date timeSent = new Date((long)t.timeSent*1000);
-			 Date timeCompleted = new Date((long)t.timeSent*1000);
+			 LocalDateTime timeSent =  LocalDateTime.ofInstant(Instant.ofEpochMilli((long)t.timeSent*1000),TimeZone.getTimeZone("Europe/London").toZoneId()); 
+			 
+			 LocalDateTime timeCompleted = null;
+			try {
+				timeCompleted = LocalDateTime.ofInstant(Instant.ofEpochMilli((long)t.timeCompleted*1000),TimeZone.getTimeZone("Europe/London").toZoneId());
+			} catch (Exception e) {
+			} 
+
 			 TransferJobReply tjr = new TransferJobReply(t.id,t.getRecvWarehouse(),t.getDispWarehouse(),t.getItems(),timeSent,timeCompleted,t.status);
 			 result.add(tjr);
 			

@@ -20,8 +20,8 @@ public class TransferJob{
 	public Warehouse recvWarehouse;
 	public Warehouse dispWarehouse;
 	public ArrayList<Items> listOfItems;
-	public Date timeSent;
-	public Date timeCompleted;
+	public LocalDateTime timeSent;
+	public LocalDateTime timeCompleted;
 	public String status;
 
 

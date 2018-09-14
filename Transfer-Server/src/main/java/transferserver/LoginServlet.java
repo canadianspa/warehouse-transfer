@@ -11,8 +11,11 @@ import javax.servlet.http.HttpServletResponse;
 import com.google.gson.Gson;
 import com.googlecode.objectify.ObjectifyService;
 
+import entities.Item;
+import entities.Items;
 import entities.TransferJob;
 import entities.User;
+import entities.Warehouse;
 import requests.CreateJobRequest;
 import requests.LoginRequest;
 import requests.changeTransferJobRequest;
@@ -26,6 +29,12 @@ public class LoginServlet  extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		response.setContentType("text/plain");
 		response.setCharacterEncoding("UTF-8");
+		
+		ObjectifyService.register(TransferJob.class); 
+		ObjectifyService.register(Warehouse.class); 
+		ObjectifyService.register(Item.class); 
+		ObjectifyService.register(Items.class); 
+		ObjectifyService.register(User.class); 
 		
 		try {
 			Gson g = new Gson();

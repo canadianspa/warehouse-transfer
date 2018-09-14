@@ -30,11 +30,11 @@ public class DeleteJobServlet  extends HttpServlet{
 			
 			changeTransferJobRequest cjr = g.fromJson(request.getReader().readLine(), changeTransferJobRequest.class);
 			TransferJob tj = ObjectifyService.ofy().load().type(TransferJob.class).id(cjr.TransferJobId).now();
-			if(cjr.getLevel() < 3 && !ObjectifyService.ofy().load().key(tj.creator).now().email.equals(cjr.getUser().email))
+			if(cjr.getLevel() < 1)
 			{
-				throw new Exception("Need higher Level or need to be creator");
+				throw new Exception("Need higher Level");
 			}
-			tj.deleteDelivery();
+			tj.deleteDelivery(cjr.getUser());
 			
 		} catch (Exception e) {
 			response.getWriter().print("Failed");
