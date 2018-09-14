@@ -51,6 +51,7 @@ public abstract class ViewJobs extends JFrame {
 
 		String body = response.readEntity(String.class);
 		Gson g = new Gson();
+		System.out.println(body);
 		return g.fromJson(body, new TypeToken<ArrayList<TransferJob>>(){}.getType());
 		
 	}
@@ -77,7 +78,7 @@ public abstract class ViewJobs extends JFrame {
 		
 		c.gridx = 2;
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
-		JLabel timeSent = new JLabel();
+		JLabel timeSent = new JLabel(tj.timeSent.toString());
 		panel.add(timeSent,c);
 		
 		c.gridx = 3;

@@ -2,6 +2,7 @@ package entities;
 
 
 
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Date;
 
@@ -26,8 +27,8 @@ public class TransferJob {
 	public Key<Warehouse> recvWarehouseKey;
 	public Key<Warehouse> dispWarehouseKey;
 	public ArrayList<Items> listOfItems;
-	public Date timeSent;
-	public Date timeCompleted;
+	public Long timeSent;
+	public Long timeCompleted;
 	public String status;
 	public Key<User> creator;
 	String APIKEY = "***REMOVED***";
@@ -41,7 +42,7 @@ public class TransferJob {
 		this.listOfItems = listOfItems;
 		this.creator = creator;
 		status = "Transit";
-		timeSent = LocalDateTime.now().toDate();
+		timeSent = Instant.now().getEpochSecond();
 		for(Items i: listOfItems)
 		{
 			Client client = ClientBuilder.newClient();
@@ -124,7 +125,7 @@ public class TransferJob {
 				StockEntry se2 = g.fromJson(body, StockEntry.class);
 				System.out.println(i.getItem().productTitle + ":" + se.physical_stock_level);
 			}
-			timeCompleted = LocalDateTime.now().toDate();
+			timeCompleted = Instant.now().getEpochSecond();
 			status = "Delivered";
 			ObjectifyService.ofy().save().entity(this).now();
 		}
@@ -166,7 +167,7 @@ public class TransferJob {
 				StockEntry se2 = g.fromJson(body, StockEntry.class);
 				System.out.println(i.getItem().productTitle + ":" + se.physical_stock_level);
 			}
-			timeCompleted = LocalDateTime.now().toDate();
+			timeCompleted = Instant.now().getEpochSecond();
 			status = "Deleted";
 			ObjectifyService.ofy().save().entity(this).now();
 		}

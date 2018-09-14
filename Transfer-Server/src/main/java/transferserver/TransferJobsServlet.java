@@ -2,8 +2,10 @@ package transferserver;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.logging.Logger;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -22,6 +24,7 @@ import entities.TransferJob;
 import entities.Warehouse;
 import requests.CreateJobRequest;
 import requests.ItemsReply;
+import java.util.logging.Logger;
 
 @WebServlet(
 		name = "TransferJobServlet",
@@ -65,8 +68,9 @@ public class TransferJobsServlet extends HttpServlet {
 		Iterable<TransferJob> it = ObjectifyService.ofy().load().type(TransferJob.class);
 		for(TransferJob t: it)
 		{
-		
-			 TransferJobReply tjr = new TransferJobReply(t.id,t.getRecvWarehouse(),t.getDispWarehouse(),t.getItems(),t.timeSent,t.timeCompleted,t.status);
+			 Date timeSent = new Date((long)t.timeSent*1000);
+			 Date timeCompleted = new Date((long)t.timeSent*1000);
+			 TransferJobReply tjr = new TransferJobReply(t.id,t.getRecvWarehouse(),t.getDispWarehouse(),t.getItems(),timeSent,timeCompleted,t.status);
 			 result.add(tjr);
 			
 		}
@@ -84,10 +88,11 @@ public class TransferJobsServlet extends HttpServlet {
 
 	@Override
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		ObjectifyService.register(TransferJob.class); 
+		
+		final Logger log = Logger.getLogger(TransferJobsServlet.class.getName());
+		log.info("Creating a Transfer Job");
 		response.setContentType("text/plain");
 		response.setCharacterEncoding("UTF-8");
-		
 		try {
 			Gson g = new Gson();
 			
