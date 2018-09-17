@@ -33,14 +33,26 @@ public class TearDownAndSetUp extends HttpServlet {
 		User jake = new User("***REMOVED***","***REMOVED***",3);
 		ObjectifyService.ofy().save().entity(jake).now();
 		
-		User kerry = new User("kerry@canadianspacompany.com","canspa",1);
+		User troy = new User("troy@canadianspacompany.com","canspa",3);
+		ObjectifyService.ofy().save().entity(troy).now();
+		
+		User phil = new User("phil@canadianspacompany.com","canspa",3);
+		ObjectifyService.ofy().save().entity(phil).now();
+		
+		User kerry = new User("kerry@canadianspacompany.com","canspa",2);
 		ObjectifyService.ofy().save().entity(kerry).now();
+		
+		User xav = new User("xavier@canadianspacompany.com","canspa",2);
+		ObjectifyService.ofy().save().entity(xav).now();
 		
 		User paul = new User("paul@canadianspacompany.com","canspa",2);
 		ObjectifyService.ofy().save().entity(paul).now();
 		
 		User tony = new User("tony@canadianspacompany.com","canspa",2);
 		ObjectifyService.ofy().save().entity(tony).now();
+		
+		User len = new User("lenahearn@yahoo.co.uk","canspa",2);
+		ObjectifyService.ofy().save().entity(len).now();
 		
 
 		
