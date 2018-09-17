@@ -2,6 +2,7 @@ package gui;
 
 import java.awt.BorderLayout;
 import java.awt.EventQueue;
+import java.awt.Font;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -20,6 +21,7 @@ import requests.Settings;
 
 import java.awt.GridLayout;
 import javax.swing.JTextField;
+import javax.swing.UIManager;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JButton;
@@ -40,6 +42,10 @@ public class LoginGUI extends JFrame {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
+					UIManager.put("Label.font",new Font("Arial", Font.BOLD, 20));
+					UIManager.put("TextField.font",new Font("Arial", Font.BOLD, 20));
+					UIManager.put("Button.font",new Font("Arial", Font.BOLD, 20));
+					UIManager.put("ComboBox.font",new Font("Arial", Font.BOLD, 20));
 					LoginGUI frame = new LoginGUI();
 					frame.setVisible(true);
 				} catch (Exception e) {
@@ -54,7 +60,7 @@ public class LoginGUI extends JFrame {
 	 */
 	public LoginGUI() {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 450, 300);
+		setBounds(100, 100, 600, 200);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);

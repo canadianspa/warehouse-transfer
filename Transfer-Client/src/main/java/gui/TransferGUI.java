@@ -1,6 +1,7 @@
 package gui;
 import java.awt.BorderLayout;
 import java.awt.EventQueue;
+import java.awt.Font;
 import java.awt.GridBagConstraints;
 
 import javax.swing.JFrame;
@@ -98,6 +99,7 @@ public class TransferGUI extends JFrame {
 			}
 
 			final JSpinner jsp = new JSpinner();
+			jsp.setFont(new Font("Arial", Font.BOLD, 20));
 			jsp.setModel(new SpinnerNumberModel(i.quantity, null, null, new Integer(1)));
 			jsp.addChangeListener(new ChangeListener() {
 
@@ -146,7 +148,7 @@ public class TransferGUI extends JFrame {
 	public TransferGUI() {
 		setTitle("Transfer");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 500, 300);
+		setBounds(100, 100, 600, 500);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);

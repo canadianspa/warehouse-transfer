@@ -29,6 +29,8 @@ import java.io.ObjectInputStream;
 import java.text.SimpleDateFormat;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 import java.awt.Insets;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
@@ -81,23 +83,23 @@ public abstract class ViewJobs extends JFrame {
 		JLabel timeSent = new JLabel(tj.timeSent.toString());
 		panel.add(timeSent,c);
 		
-		c.gridx = 3;
+	}
+	
+	public JButton createViewItemsJButton(final ArrayList<Items> listOfItems)
+	{
 		JButton view = new JButton("View Items");
 		view.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				String stringItems = "";
-				for(Items i: ftj.listOfItems)
+				for(Items i: listOfItems)
 				{
 					stringItems += i.toString() + System.lineSeparator();
 				}
 				JOptionPane.showMessageDialog(null,stringItems , "Items", JOptionPane.INFORMATION_MESSAGE); 
 			}
 		});
-		panel.add(view,c);
-		
+		return view;
 	}
-	
-	
 	public void showJobs()
 	{
 		contentPane.remove(panel);
@@ -129,10 +131,14 @@ public abstract class ViewJobs extends JFrame {
 
 		//find jobs
 		ArrayList<TransferJob> listOfJobs = findJobs();
-		
+		Collections.sort(listOfJobs);
 		int gridyCounter = 1;
 		for(TransferJob tj : listOfJobs)
 		{
+			if(gridyCounter == 11)
+			{
+				break;
+			}
 			writeJob(gridyCounter,tj);
 			gridyCounter ++;
 		}
@@ -142,7 +148,7 @@ public abstract class ViewJobs extends JFrame {
 	 */
 	public ViewJobs() {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 1000, 300);
+		setBounds(100, 100, 1500, 1000);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);

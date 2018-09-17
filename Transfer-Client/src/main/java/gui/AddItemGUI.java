@@ -4,6 +4,7 @@ import java.awt.EventQueue;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.JSpinner;
 import javax.swing.border.EmptyBorder;
 import javax.ws.rs.client.Client;
@@ -100,7 +101,7 @@ public class AddItemGUI extends JFrame {
 				contentPane.add(panel_3);
 				GridBagConstraints c = new GridBagConstraints();
 				c.fill = GridBagConstraints.HORIZONTAL;
-				c.anchor = GridBagConstraints.NORTH;
+				c.anchor = GridBagConstraints.NORTHWEST;
 				c.weighty = 1;
 				int gridycounter = 0;
 				for(Item i: results)

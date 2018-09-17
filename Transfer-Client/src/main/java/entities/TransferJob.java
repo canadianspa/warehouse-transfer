@@ -1,6 +1,7 @@
 package entities;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.Date;
 
 import javax.ws.rs.client.Client;
@@ -13,7 +14,7 @@ import com.google.gson.Gson;
 import requests.Settings;
 import requests.changeTransferJobRequest;
 
-public class TransferJob{
+public class TransferJob implements Comparable<TransferJob>{
 
 	
 	public Long id;
@@ -66,9 +67,17 @@ public class TransferJob{
 		{
 			return "Failed to delivered from " + dispWarehouse.name + " sent out at " + timeSent.toString() + " to Warehouse " + recvWarehouse.name;
 		}
+	
 
 
 	}
+
+
+	public int compareTo(TransferJob tj) {
+		 return -timeSent.compareTo(tj.timeSent);
+	}
+	
+	
 
 
 
