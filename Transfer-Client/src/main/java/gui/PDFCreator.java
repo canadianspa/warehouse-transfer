@@ -33,7 +33,7 @@ public class PDFCreator {
 				}
 				
 				setField("sku" + counter,i.i.sku);
-				setField("desc" + counter,i.i.sku);
+				setField("desc" + counter,i.i.productTitle);
 				setField("qty" + counter,String.valueOf(i.quantity));
 				counter ++;
 			}
