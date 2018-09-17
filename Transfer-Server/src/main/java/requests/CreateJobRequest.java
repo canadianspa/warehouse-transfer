@@ -3,8 +3,6 @@ package requests;
 import java.util.ArrayList;
 
 import com.googlecode.objectify.Key;
-import com.googlecode.objectify.ObjectifyService;
-
 import entities.Item;
 import entities.Items;
 import entities.TransferJob;

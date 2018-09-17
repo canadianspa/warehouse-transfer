@@ -12,8 +12,6 @@ import com.google.gson.Gson;
 import com.googlecode.objectify.ObjectifyService;
 
 import entities.TransferJob;
-import entities.User;
-import requests.CreateJobRequest;
 import requests.changeTransferJobRequest;
 @WebServlet(
 		name = "ConfirmDeliveryServlet",

@@ -2,7 +2,6 @@ package requests;
 
 import com.googlecode.objectify.ObjectifyService;
 
-import entities.TransferJob;
 import entities.User;
 
 public abstract class Request {

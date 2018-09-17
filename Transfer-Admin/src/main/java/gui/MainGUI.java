@@ -1,14 +1,14 @@
 package gui;
-import java.awt.BorderLayout;
-import java.awt.EventQueue;
 
+import java.awt.EventQueue;
+import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
+import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
-import java.awt.GridLayout;
-import javax.swing.JButton;
-import java.awt.event.ActionListener;
-import java.awt.event.ActionEvent;
 
 public class MainGUI extends JFrame {
 
@@ -40,7 +40,7 @@ public class MainGUI extends JFrame {
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
 		contentPane.setLayout(new GridLayout(0, 1, 0, 0));
-		
+
 		JButton viewUsers = new JButton("Show Users");
 		viewUsers.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -50,7 +50,7 @@ public class MainGUI extends JFrame {
 			}
 		});
 		contentPane.add(viewUsers);
-		
+
 		JButton createUsers = new JButton("Create Users");
 		createUsers.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -60,7 +60,7 @@ public class MainGUI extends JFrame {
 			}
 		});
 		contentPane.add(createUsers);
-	
+
 	}
 
 }

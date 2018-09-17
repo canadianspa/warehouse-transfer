@@ -1,12 +1,19 @@
 package gui;
 import java.awt.BorderLayout;
-import java.awt.EventQueue;
+import java.awt.Color;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.ArrayList;
 
+import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.JSpinner;
-import javax.swing.border.EmptyBorder;
+import javax.swing.JTextField;
+import javax.swing.border.LineBorder;
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.client.Entity;
@@ -14,34 +21,11 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 import com.google.gson.Gson;
-import com.google.gson.JsonArray;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonParser;
 import com.google.gson.reflect.TypeToken;
 
 import entities.Item;
 import entities.Items;
 import requests.Settings;
-
-import java.awt.GridLayout;
-import java.util.ArrayList;
-import java.util.Collection;
-
-import javax.swing.JLabel;
-import javax.swing.JTextField;
-import javax.swing.SpinnerNumberModel;
-import javax.swing.JButton;
-import java.awt.FlowLayout;
-import java.awt.GridBagConstraints;
-import java.awt.event.ActionListener;
-import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
-import java.awt.event.ActionEvent;
-import java.awt.GridBagLayout;
-import javax.swing.border.BevelBorder;
-import javax.swing.border.EtchedBorder;
-import javax.swing.border.LineBorder;
-import java.awt.Color;
 
 public class AddItemGUI extends JFrame {
 

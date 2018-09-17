@@ -1,6 +1,5 @@
 package requests;
 
-import java.awt.EventQueue;
 import java.util.ArrayList;
 
 import javax.ws.rs.client.Client;
@@ -10,9 +9,6 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 import com.google.gson.Gson;
-
-import entities.Items;
-import gui.MainGUI;
 
 
 public class CreateJobRequest extends Request {

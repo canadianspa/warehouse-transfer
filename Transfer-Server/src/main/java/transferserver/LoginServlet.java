@@ -16,9 +16,7 @@ import entities.Items;
 import entities.TransferJob;
 import entities.User;
 import entities.Warehouse;
-import requests.CreateJobRequest;
 import requests.LoginRequest;
-import requests.changeTransferJobRequest;
 @WebServlet(
 		name = "LoginServlet",
 		urlPatterns = {"/Login"}

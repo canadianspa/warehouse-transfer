@@ -12,7 +12,6 @@ import com.google.gson.Gson;
 import com.googlecode.objectify.ObjectifyService;
 
 import entities.TransferJob;
-import requests.CreateJobRequest;
 import requests.changeTransferJobRequest;
 @WebServlet(
 		name = "DeleteJobServlet",

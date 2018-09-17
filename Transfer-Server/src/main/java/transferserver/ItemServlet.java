@@ -20,10 +20,6 @@ import com.google.gson.JsonParser;
 import com.googlecode.objectify.ObjectifyService;
 
 import entities.Item;
-import entities.Items;
-import entities.TransferJob;
-import entities.Warehouse;
-import requests.CreateJobRequest;
 @WebServlet(
 		name = "ItemServlet",
 		urlPatterns = {"/Item"}

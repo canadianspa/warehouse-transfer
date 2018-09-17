@@ -1,12 +1,18 @@
 package gui;
 
-
-import java.awt.BorderLayout;
 import java.awt.EventQueue;
 import java.awt.Font;
+import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
+import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JTextField;
+import javax.swing.UIManager;
 import javax.swing.border.EmptyBorder;
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
@@ -18,16 +24,6 @@ import com.google.gson.Gson;
 
 import requests.LoginRequest;
 import requests.Settings;
-
-import java.awt.GridLayout;
-import javax.swing.JTextField;
-import javax.swing.UIManager;
-import javax.swing.JLabel;
-import javax.swing.JOptionPane;
-import javax.swing.JButton;
-import java.awt.event.ActionListener;
-import java.util.ArrayList;
-import java.awt.event.ActionEvent;
 
 public class LoginGUI extends JFrame {
 
@@ -42,10 +38,10 @@ public class LoginGUI extends JFrame {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					UIManager.put("Label.font",new Font("Arial", Font.BOLD, 20));
-					UIManager.put("TextField.font",new Font("Arial", Font.BOLD, 20));
-					UIManager.put("Button.font",new Font("Arial", Font.BOLD, 20));
-					UIManager.put("ComboBox.font",new Font("Arial", Font.BOLD, 20));
+					UIManager.put("Label.font", new Font("Arial", Font.BOLD, 20));
+					UIManager.put("TextField.font", new Font("Arial", Font.BOLD, 20));
+					UIManager.put("Button.font", new Font("Arial", Font.BOLD, 20));
+					UIManager.put("ComboBox.font", new Font("Arial", Font.BOLD, 20));
 					LoginGUI frame = new LoginGUI();
 					frame.setVisible(true);
 				} catch (Exception e) {
@@ -86,34 +82,26 @@ public class LoginGUI extends JFrame {
 		JButton btnLogin = new JButton("Login");
 		btnLogin.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				LoginRequest lr = new LoginRequest(txtEmail.getText(),txtPassword.getText());
+				LoginRequest lr = new LoginRequest(txtEmail.getText(), txtPassword.getText());
 				Gson g = new Gson();
 				Client client = ClientBuilder.newClient();
 				Response response;
-				response = client.target(Settings.serverPath + "Login")
-						.request(MediaType.APPLICATION_JSON_TYPE)
+				response = client.target(Settings.serverPath + "Login").request(MediaType.APPLICATION_JSON_TYPE)
 						.post(Entity.json(g.toJson(lr)));
-				
-				String body = response.readEntity(String.class);	
 
-				if(body.equals("Failed"))
-				{
+				String body = response.readEntity(String.class);
+
+				if (body.equals("Failed")) {
 					JOptionPane.showMessageDialog(null, "Failed Login");
-					
-				}
-				else
-				{
+
+				} else {
 					System.out.println(body);
 					Settings.userKey = body;
 					MainGUI frame = new MainGUI();
 					frame.setVisible(true);
-					
+
 					LoginGUI.this.setVisible(false);
 				}
-
-				
-
-				
 
 			}
 		});

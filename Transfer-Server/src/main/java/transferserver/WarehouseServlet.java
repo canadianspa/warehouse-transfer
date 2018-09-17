@@ -17,9 +17,6 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.googlecode.objectify.ObjectifyService;
 
-import entities.Item;
-import entities.Items;
-import entities.TransferJob;
 import entities.Warehouse;
 @WebServlet(
 		name = "WarehouseServlet",

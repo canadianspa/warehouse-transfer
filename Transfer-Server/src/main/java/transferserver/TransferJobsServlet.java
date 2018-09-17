@@ -1,11 +1,9 @@
 package transferserver;
 
 import java.io.IOException;
-import java.io.InputStream;
 import java.time.Instant;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.TimeZone;
 import java.util.logging.Logger;
 
@@ -16,17 +14,12 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.google.gson.Gson;
-import com.google.gson.JsonSyntaxException;
-import com.googlecode.objectify.Key;
 import com.googlecode.objectify.ObjectifyService;
 
-import entities.Item;
-import entities.Items;
 import entities.TransferJob;
 import entities.Warehouse;
 import requests.CreateJobRequest;
 import requests.ItemsReply;
-import java.util.logging.Logger;
 
 @WebServlet(
 		name = "TransferJobServlet",
@@ -70,11 +63,11 @@ public class TransferJobsServlet extends HttpServlet {
 		Iterable<TransferJob> it = ObjectifyService.ofy().load().type(TransferJob.class);
 		for(TransferJob t: it)
 		{
-			 LocalDateTime timeSent =  LocalDateTime.ofInstant(Instant.ofEpochMilli((long)t.timeSent*1000),TimeZone.getTimeZone("Europe/London").toZoneId()); 
+			 LocalDateTime timeSent =  LocalDateTime.ofInstant(Instant.ofEpochMilli(t.timeSent*1000),TimeZone.getTimeZone("Europe/London").toZoneId()); 
 			 
 			 LocalDateTime timeCompleted = null;
 			try {
-				timeCompleted = LocalDateTime.ofInstant(Instant.ofEpochMilli((long)t.timeCompleted*1000),TimeZone.getTimeZone("Europe/London").toZoneId());
+				timeCompleted = LocalDateTime.ofInstant(Instant.ofEpochMilli(t.timeCompleted*1000),TimeZone.getTimeZone("Europe/London").toZoneId());
 			} catch (Exception e) {
 			} 
 
