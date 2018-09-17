@@ -14,11 +14,9 @@ public class pdfBox {
 	static PDDocument doc;
 	public static void main(String[] args) {
 		try {
-			doc = PDDocument.load(new File("//home/jake/stock-tranfer-form.pdf"));
-			setField("qty1", "5");
-			setField("desc1", "the blah blah");
-			setField("sku1", "SK-103");
-			doc.save("//home/jake/filledForm.pdf");
+			doc = PDDocument.load(new File("stock-tranfer-form.pdf"));
+			printFields();
+			
 			doc.close();
 
 		} catch (InvalidPasswordException e) {

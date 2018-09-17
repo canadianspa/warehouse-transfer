@@ -2,6 +2,7 @@ package entities;
 
 import java.util.UUID;
 
+import com.googlecode.objectify.ObjectifyService;
 import com.googlecode.objectify.annotation.Entity;
 import com.googlecode.objectify.annotation.Id;
 @Entity
@@ -19,8 +20,8 @@ public class User {
 		this.email = email;
 		this.password = password;
 		this.userKey = UUID.randomUUID().toString();
-		System.out.println(userKey);
 		this.level = level;
+		ObjectifyService.ofy().save().entity(this).now();
 	}
 
 	public User() {}
