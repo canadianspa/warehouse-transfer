@@ -33,6 +33,8 @@ public abstract class ViewJobs extends JFrame {
 	/**
 	 * Launch the application.
 	 */
+	public int start =0;
+	public int end = 10;
 	
 	public ArrayList<TransferJob> findJobs()
 	{
@@ -59,16 +61,22 @@ public abstract class ViewJobs extends JFrame {
 
 		
 		final TransferJob ftj = tj;
+		
 		c.gridy = gridyCounter;
 		c.gridx = 0;
+		JLabel id = new JLabel(String.valueOf(tj.id));
+		panel.add(id,c);
+		
+		c.gridy = gridyCounter;
+		c.gridx = 1;
 		JLabel dispLabel = new JLabel(tj.dispWarehouse.name);
 		panel.add(dispLabel,c);
 		
-		c.gridx = 1;
+		c.gridx = 2;
 		JLabel recvLabel = new JLabel(tj.recvWarehouse.name);
 		panel.add(recvLabel,c);
 		
-		c.gridx = 2;
+		c.gridx = 3;
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
 		JLabel timeSent = new JLabel(tj.timeSent.toString());
 		panel.add(timeSent,c);
@@ -90,6 +98,19 @@ public abstract class ViewJobs extends JFrame {
 		});
 		return view;
 	}
+	
+	public void pageDown()
+	{
+		start += 10;
+		end += 10;
+		showJobs();
+	}
+	public void pageUp()
+	{
+		start -= 10;
+		end -= 10;
+		showJobs();
+	}
 	public void showJobs()
 	{
 		contentPane.remove(panel);
@@ -108,14 +129,18 @@ public abstract class ViewJobs extends JFrame {
 
 		//headers
 		c.gridx = 0;
+		JLabel id = new JLabel("Job ID");
+		panel.add(id,c);
+		
+		c.gridx = 1;
 		JLabel l0 = new JLabel("Dispatching Warehouse");
 		panel.add(l0,c);
 
-		c.gridx = 1;
+		c.gridx = 2;
 		JLabel l1 = new JLabel("Recieving Warehouse");
 		panel.add(l1,c);
 
-		c.gridx = 2;
+		c.gridx = 3;
 		JLabel l2 = new JLabel("Date Sent");
 		panel.add(l2,c);
 
@@ -123,13 +148,14 @@ public abstract class ViewJobs extends JFrame {
 		ArrayList<TransferJob> listOfJobs = findJobs();
 		Collections.sort(listOfJobs);
 		int gridyCounter = 1;
-		for(TransferJob tj : listOfJobs)
+		for(int i = start; i < end; i ++ )
 		{
-			if(gridyCounter == 11)
+			if(i >= listOfJobs.size())
 			{
 				break;
 			}
-			writeJob(gridyCounter,tj);
+			System.out.println(listOfJobs.get(i));
+			writeJob(gridyCounter,listOfJobs.get(i));
 			gridyCounter ++;
 		}
 	}
@@ -138,7 +164,7 @@ public abstract class ViewJobs extends JFrame {
 	 */
 	public ViewJobs() {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 1500, 1000);
+		setBounds(10, 10, 1500, 1000);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
@@ -161,6 +187,22 @@ public abstract class ViewJobs extends JFrame {
 			}
 		});
 		panel_1.add(btnNewButton);
+		JButton pageDownButton = new JButton("Page Down");
+		pageDownButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				pageDown();
+				revalidate();
+			}
+		});
+		panel_1.add(pageDownButton);
+		JButton pageUpButton = new JButton("Page Up");
+		pageUpButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				pageUp();
+				revalidate();
+			}
+		});
+		panel_1.add(pageUpButton);
 
 		showJobs();
 		

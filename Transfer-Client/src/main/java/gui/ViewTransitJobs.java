@@ -38,10 +38,10 @@ public class ViewTransitJobs extends ViewJobs{
 		c.weightx = 0.17;
 		c.gridy = gridyCounter;	
 		
-		c.gridx = 3;
+		c.gridx = 4;
 		panel.add(super.createViewItemsJButton(ftj.listOfItems),c);
 		
-		c.gridx = 4;
+		c.gridx = 5;
 		JButton print = new JButton("Print");
 		print.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -53,7 +53,7 @@ public class ViewTransitJobs extends ViewJobs{
 		panel.add(print,c);
 		
 		
-		c.gridx = 5;
+		c.gridx = 6;
 		JButton delete = new JButton("Delete Transfer");
 		delete.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -64,7 +64,7 @@ public class ViewTransitJobs extends ViewJobs{
 		});
 		panel.add(delete,c);
 
-		c.gridx = 6;
+		c.gridx = 7;
 		JButton confirm = new JButton("Confirm Delivery");
 		confirm.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {

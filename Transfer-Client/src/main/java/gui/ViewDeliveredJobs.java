@@ -1,7 +1,10 @@
 package gui;
 import java.awt.GridBagConstraints;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.ArrayList;
 
+import javax.swing.JButton;
 import javax.swing.JLabel;
 
 import entities.TransferJob;
@@ -36,21 +39,32 @@ public class ViewDeliveredJobs extends ViewJobs{
 		
 		
 		c.gridy = 0;
-		c.gridx = 3;
-		JLabel deleted = new JLabel("Time Deleted");
+		c.gridx = 4;
+		JLabel deleted = new JLabel("Time Delivered");
 		panel.add(deleted,c);	
 		
 		
 		
 		c.gridy = gridyCounter;	
-		c.gridx = 3;
+		c.gridx = 4;
 		JLabel timeCompleted = new JLabel(tj.timeCompleted.toString());
 		panel.add(timeCompleted,c);
 		
 		
 		
-		c.gridx =4 ;
+		c.gridx =5 ;
 		panel.add(super.createViewItemsJButton(ftj.listOfItems),c);
+		
+		c.gridx =6;
+		JButton print = new JButton("Print");
+		print.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				PDFCreator.print(ftj);
+				
+				
+			}
+		});
+		panel.add(print,c);
 
 		
 	}
