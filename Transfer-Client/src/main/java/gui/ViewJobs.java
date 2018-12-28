@@ -164,7 +164,7 @@ public abstract class ViewJobs extends JFrame {
 	 */
 	public ViewJobs() {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(10, 10, 1500, 1000);
+		setBounds(10, 10, 1700, 1000);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);

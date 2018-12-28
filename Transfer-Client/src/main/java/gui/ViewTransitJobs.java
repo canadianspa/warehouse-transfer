@@ -42,7 +42,7 @@ public class ViewTransitJobs extends ViewJobs{
 		panel.add(super.createViewItemsJButton(ftj.listOfItems),c);
 		
 		c.gridx = 5;
-		JButton print = new JButton("Print");
+		JButton print = new JButton("Create PDF");
 		print.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				PDFCreator.print(ftj);

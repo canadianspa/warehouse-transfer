@@ -57,6 +57,8 @@ public class LoginGUI extends JFrame {
 	 * Create the frame.
 	 */
 	public LoginGUI() {
+		
+		setTitle("Warehouse Transfer v1.3");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 600, 200);
 		contentPane = new JPanel();
@@ -82,6 +84,8 @@ public class LoginGUI extends JFrame {
 		contentPane.add(panel);
 
 		JButton btnLogin = new JButton("Login");
+		
+		getRootPane().setDefaultButton(btnLogin);
 		btnLogin.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				LoginRequest lr = new LoginRequest(txtEmail.getText(),txtPassword.getText());

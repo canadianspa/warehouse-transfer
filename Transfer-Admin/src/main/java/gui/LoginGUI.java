@@ -80,6 +80,7 @@ public class LoginGUI extends JFrame {
 		contentPane.add(panel);
 
 		JButton btnLogin = new JButton("Login");
+		getRootPane().setDefaultButton(btnLogin);
 		btnLogin.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				LoginRequest lr = new LoginRequest(txtEmail.getText(), txtPassword.getText());
