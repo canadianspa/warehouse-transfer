@@ -58,7 +58,7 @@ public class LoginGUI extends JFrame {
 	 */
 	public LoginGUI() {
 		
-		setTitle("Warehouse Transfer v1.3");
+		setTitle("Warehouse Transfer v1.4");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 600, 200);
 		contentPane = new JPanel();

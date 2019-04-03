@@ -27,7 +27,7 @@ public class PDFCreator {
 			int counter = 1;
 			for(Items i: t.listOfItems)
 			{
-				if(counter == 7)
+				if(counter == 14)
 				{
 					break;
 				}
